@@ -11,4 +11,8 @@ public class Room {
     private String roomName;
     private Double roomWidth;
     private Double roomLength;
+
+    public Double getRoomArea(Room room) {
+        return roomWidth * roomLength;
+    }
 }
