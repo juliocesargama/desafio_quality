@@ -1,7 +1,10 @@
 package br.com.meli.desafio_quality.repository;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface IRepository<T> {
-    void save(T t);
+    T save(T t);
     boolean delete(String name);
     T findByName(String name);
 }

@@ -1,6 +1,7 @@
 package br.com.meli.desafio_quality.service;
 
 import br.com.meli.desafio_quality.entity.RealEstate;
+import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,14 @@ public class RealEstateService {
     @Autowired
     RoomService roomService;
 
+    @Autowired
+    RealEstateRepository realEstateRepository;
+
     List<RealEstate> realEstates = new ArrayList<RealEstate>();
 
 
     public List<RealEstate> getAll() {
-        return realEstates;
+        return realEstateRepository.findAll();
     }
 
     public Double getRealStateTotalArea(RealEstate realEstate){
@@ -27,16 +31,15 @@ public class RealEstateService {
 
     }
 
-    public RealEstate getRealEstate(String propName) {
-
-        return realEstates.stream()
-                .filter(realEstate -> realEstate.getPropName().equals(propName))
-                .findFirst()
-                .get();
-    }
-
     public BigDecimal getRealEstatePrice(RealEstate realEstate) {
         return BigDecimal.valueOf(getRealStateTotalArea(realEstate)).multiply(realEstate.getDistrict().getValueDistrictM2());
     }
 
+    public RealEstate save(RealEstate realEstate) {
+        return realEstateRepository.save(realEstate);
+    }
+
+    public RealEstate findByName(String name) {
+        return realEstateRepository.findByName(name);
+    }
 }
