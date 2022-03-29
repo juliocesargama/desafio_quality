@@ -5,9 +5,10 @@ import br.com.meli.desafio_quality.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 public class RoomController {
@@ -16,7 +17,7 @@ public class RoomController {
     RoomService roomService;
 
     @GetMapping("/room/area")
-    public ResponseEntity<Double> returnRoomArea(@RequestParam String nameRoom,
+    public ResponseEntity<Double> returnRoomArea(@Valid @RequestParam String nameRoom,
                                                  @RequestParam String nameRealEstate) {
         Room room = roomService.getRoomByName(nameRoom);
         return ResponseEntity.ok(roomService.getRoomArea(room));
