@@ -1,16 +1,15 @@
 package br.com.meli.desafio_quality.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comodo {
 
-    private roomName String;
-    private roomWidth Double;
-    private roomLength Double;
+    private String roomName;
+    private Double roomWidth;
+    private Double roomLength;
 
 }
