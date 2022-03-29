@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comodo {
+public class Room {
 
     private String roomName;
     private Double roomWidth;
