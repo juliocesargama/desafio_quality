@@ -1,6 +1,7 @@
 package br.com.meli.desafio_quality.controller;
 
 import br.com.meli.desafio_quality.entity.RealEstate;
+
 import br.com.meli.desafio_quality.service.RealEstateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,6 @@ public class RealEstateController {
         RealEstate realEstate = realEstateService.getRealEstate(propName);
 
         return ResponseEntity.ok(realEstateService.getRealStateTotalArea(realEstate));
+
     }
 }
