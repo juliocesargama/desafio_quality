@@ -12,4 +12,5 @@ public class Comodo {
     private Double roomWidth;
     private Double roomLength;
 
+
 }
