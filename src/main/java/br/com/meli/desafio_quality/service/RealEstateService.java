@@ -36,7 +36,7 @@ public class RealEstateService {
     }
 
     public BigDecimal getRealEstatePrice(RealEstate realEstate) {
-        return BigDecimal.valueOf(getRealStateTotalArea(realEstate) * realEstate.getDistrict().getValueDistrictM2());
+        return BigDecimal.valueOf(getRealStateTotalArea(realEstate)).multiply(realEstate.getDistrict().getValueDistrictM2());
     }
 
 }
