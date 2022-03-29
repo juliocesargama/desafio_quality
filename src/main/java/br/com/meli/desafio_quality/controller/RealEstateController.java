@@ -4,10 +4,10 @@ import br.com.meli.desafio_quality.entity.RealEstate;
 
 import br.com.meli.desafio_quality.service.RealEstateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -23,16 +23,25 @@ public class RealEstateController {
     }
 
     @GetMapping("/realestate/{name}")
-    public ResponseEntity<RealEstate> getRealEstateByName(@PathVariable String propName){
-        return ResponseEntity.ok(realEstateService.getRealEstate(propName));
+    public ResponseEntity<RealEstate> getRealEstateByName(@PathVariable String name){
+        return ResponseEntity.ok(realEstateService.findByName(name));
     }
 
     @GetMapping("/realestate/{propName}/totalarea")
     public ResponseEntity<Double> getRealEstateTotalArea(@PathVariable String propName){
 
-        RealEstate realEstate = realEstateService.getRealEstate(propName);
+        RealEstate realEstate = realEstateService.findByName(propName);
 
         return ResponseEntity.ok(realEstateService.getRealStateTotalArea(realEstate));
+
+    }
+
+    @PostMapping("/realestate")
+    public ResponseEntity<RealEstate> returnBiggestRoom(@RequestBody RealEstate realEstate) {
+
+        RealEstate realEstateCreated = realEstateService.save(realEstate);
+
+        return new ResponseEntity<>(realEstateCreated, HttpStatus.CREATED);
 
     }
 }
