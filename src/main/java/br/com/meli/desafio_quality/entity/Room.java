@@ -12,5 +12,4 @@ public class Room {
     private Double roomWidth;
     private Double roomLength;
 
-
 }
