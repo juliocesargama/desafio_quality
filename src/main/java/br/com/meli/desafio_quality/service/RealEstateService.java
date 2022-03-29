@@ -4,6 +4,7 @@ import br.com.meli.desafio_quality.entity.RealEstate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class RealEstateService {
                 .filter(realEstate -> realEstate.getPropName().equals(propName))
                 .findFirst()
                 .get();
+    }
+
+    public BigDecimal getRealEstatePrice(RealEstate realEstate) {
+        return BigDecimal.valueOf(getRealStateTotalArea(realEstate) * realEstate.getDistrict().getValueDistrictM2());
     }
 
 }
