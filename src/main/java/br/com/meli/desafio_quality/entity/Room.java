@@ -11,5 +11,4 @@ public class Room {
     private String roomName;
     private Double roomWidth;
     private Double roomLength;
-
 }
