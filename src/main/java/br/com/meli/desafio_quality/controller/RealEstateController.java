@@ -71,7 +71,7 @@ public class RealEstateController {
     }
 
     @PostMapping("/realestate")
-    public ResponseEntity<RealEstate> returnBiggestRoom(@RequestBody RealEstate realEstate) {
+    public ResponseEntity<RealEstate> createRealEstate(@RequestBody RealEstate realEstate) {
 
         RealEstate realEstateCreated = realEstateService.save(realEstate);
 
