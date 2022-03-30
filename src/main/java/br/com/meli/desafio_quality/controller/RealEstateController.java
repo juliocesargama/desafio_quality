@@ -78,7 +78,7 @@ public class RealEstateController {
      * @author Ana preis
      * criação desse endpoint
      */
-    @GetMapping("/realestate/{propName}/largestRoom")
+    @GetMapping("/realestate/{propName}/largestroom")
     public ResponseEntity<Room> getLargestRoom(@PathVariable String propName) {
 
         RealEstate realEstate = realEstateService.findByName(propName);
