@@ -2,6 +2,7 @@ package br.com.meli.desafio_quality.service;
 
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
+import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class RealEstateService {
@@ -29,6 +30,11 @@ public class RealEstateService {
 
         return realEstate.getRooms().stream().mapToDouble(room -> roomService.getRoomArea(room)).sum();
 
+    }
+
+    public List<RoomAreaDTO> getAreaByRoom(RealEstate realEstate) {
+        return realEstate.getRooms().stream().map(room -> new RoomAreaDTO(room.getRoomName(), roomService.getRoomArea(room)))
+                .collect(Collectors.toList());
     }
 
     public BigDecimal getRealEstatePrice(RealEstate realEstate) {

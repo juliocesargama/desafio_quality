@@ -3,6 +3,7 @@ package br.com.meli.desafio_quality.controller;
 import br.com.meli.desafio_quality.entity.RealEstate;
 
 import br.com.meli.desafio_quality.entity.Room;
+import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.service.RealEstateService;
 import br.com.meli.desafio_quality.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,15 @@ public class RealEstateController {
         Room room = realEstateService.getRoomByName(realEstate, roomName);
 
         return ResponseEntity.ok(roomService.getRoomArea(room));
+    }
+
+    @GetMapping("/realestate/{propName}/areabyroom")
+    public ResponseEntity<List<RoomAreaDTO>> returAreaByRoom(@PathVariable String propName) {
+
+        RealEstate realEstate = realEstateService.findByName(propName);
+        List<RoomAreaDTO> roomAreas = realEstateService.getAreaByRoom(realEstate);
+
+        return ResponseEntity.ok(roomAreas);
     }
 
     @GetMapping("/realestate/{propName}/totalarea")
