@@ -5,6 +5,10 @@ import lombok.*;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 
+/**
+ * @author Ana preis
+ * criação da entidade real estate
+ */
 @Data
 @Builder
 @AllArgsConstructor

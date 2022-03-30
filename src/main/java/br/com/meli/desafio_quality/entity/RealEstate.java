@@ -9,7 +9,10 @@ import javax.validation.constraints.*;
 import java.util.List;
 
 
-/** Ana Preis - validação dos atributos **/
+/**
+ * @author Ana preis
+ * validação dos atributos da entidade real estate
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
