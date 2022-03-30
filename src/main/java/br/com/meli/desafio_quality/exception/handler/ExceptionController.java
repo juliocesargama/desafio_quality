@@ -1,4 +1,4 @@
-package br.com.meli.desafio_quality.controller;
+package br.com.meli.desafio_quality.exception.handler;
 
 import br.com.meli.desafio_quality.entity.ErrorDTO;
 import br.com.meli.desafio_quality.entity.RealEstate;
