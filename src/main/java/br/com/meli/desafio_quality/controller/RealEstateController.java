@@ -27,17 +27,17 @@ public class RealEstateController {
         return ResponseEntity.ok(realEstateService.findByName(name));
     }
 
-    @GetMapping("/realestate/{propName}/totalarea")
-    public ResponseEntity<Double> getRealEstateTotalArea(@PathVariable String propName){
+    @GetMapping("/realestate/{name}/totalarea")
+    public ResponseEntity<Double> getRealEstateTotalArea(@PathVariable String name){
 
-        RealEstate realEstate = realEstateService.findByName(propName);
+        RealEstate realEstate = realEstateService.findByName(name);
 
         return ResponseEntity.ok(realEstateService.getRealStateTotalArea(realEstate));
 
     }
 
     @PostMapping("/realestate")
-    public ResponseEntity<RealEstate> returnBiggestRoom(@RequestBody RealEstate realEstate) {
+    public ResponseEntity<RealEstate> createRealEstate(@RequestBody RealEstate realEstate) {
 
         RealEstate realEstateCreated = realEstateService.save(realEstate);
 

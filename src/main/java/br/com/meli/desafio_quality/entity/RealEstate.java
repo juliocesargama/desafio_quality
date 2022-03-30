@@ -20,5 +20,5 @@ public class RealEstate {
 
   private District district;
   private List<Room> rooms;
-  
+
 }
