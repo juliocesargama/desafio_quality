@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,14 @@ public class RealEstateController {
 
         return ResponseEntity.ok(realEstateService.getRealStateTotalArea(realEstate));
 
+    }
+
+    @GetMapping("/realestate/{propName}/price")
+    public ResponseEntity<BigDecimal> getRealEstatePrice(@PathVariable String propName) {
+
+        RealEstate realEstate = realEstateService.findByName(propName);
+
+        return ResponseEntity.ok(realEstateService.getRealEstatePrice(realEstate));
     }
 
     @PostMapping("/realestate")
