@@ -1,27 +1,19 @@
-package br.com.meli.desafio_quality.service;
+package br.com.meli.desafio_quality.service.tests;
 
-import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
-import org.springframework.stereotype.Service;
+import br.com.meli.desafio_quality.service.RoomService;
+import org.junit.Test;
+import org.mockito.Mock;
 
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+public class RoomServiceTest {
 
-import java.util.Map;
+    @Mock
+    private RoomService roomService;
 
-@Service
-public class RoomService {
 
-    public Double getRoomArea(Room room) {
-        return room.getRoomWidth() * room.getRoomLength();
-    }
-
-    public Room getBiggestRoom(RealEstate realEstate) {
-        List<Room> rooms = realEstate.getRooms();
-        rooms.sort(Comparator.comparing(room -> getRoomArea(room).shortValue()));
-
-        return rooms.get(rooms.size() - 1);
+    @Test
+    private void getBiggestRoomDeveEstarOk(){
+        new Room("Sala", 20.0, 25.0);
+//        roomService.getBiggestRoom();
     }
 }
