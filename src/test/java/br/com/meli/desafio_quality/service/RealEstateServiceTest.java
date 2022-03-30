@@ -4,6 +4,7 @@ import br.com.meli.desafio_quality.entity.District;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
+import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ public class RealEstateServiceTest {
 
     @Mock
     private RoomService roomService;
+
+    @Mock
+    private RealEstateRepository realEstateRepository;
 
     @InjectMocks
     private RealEstateService realEstateService;
@@ -94,5 +98,35 @@ public class RealEstateServiceTest {
         BigDecimal price = realEstateService.getRealEstatePrice(i1);
 
         Assertions.assertEquals(BigDecimal.valueOf(315000.0) , price);
+    }
+
+    /**
+     * @author Marcelo Leite
+     */
+
+    @Test
+    public void getAllRealEstateTest() {
+
+        List<RealEstate> realEstateList = new ArrayList<>();
+        realEstateList.add(i1);
+
+        Mockito.when(realEstateRepository.findAll()).thenReturn(realEstateList);
+
+        Assertions.assertEquals(realEstateList, realEstateService.getAll());
+
+    }
+
+    /**
+     * @author Marcelo Leite
+     */
+
+    @Test
+    public void getAllRealEstateEmptyTest() {
+        //Caso de retornar uma lista vazia
+        List<RealEstate> realEstateList = new ArrayList<>();
+
+        Mockito.when(realEstateRepository.findAll()).thenReturn(realEstateList);
+
+        Assertions.assertEquals(realEstateList, realEstateService.getAll());
     }
 }
