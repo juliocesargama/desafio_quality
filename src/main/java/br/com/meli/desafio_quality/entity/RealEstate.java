@@ -8,6 +8,8 @@ import javax.validation.constraints.*;
 
 import java.util.List;
 
+
+/** Ana Preis - validação dos atributos **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

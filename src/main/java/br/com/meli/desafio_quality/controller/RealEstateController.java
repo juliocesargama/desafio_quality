@@ -33,6 +33,7 @@ public class RealEstateController {
         return ResponseEntity.ok(realEstateService.findByName(name));
     }
 
+    /** Ana Preis **/
     @GetMapping("/realestate/{propName}/{roomName}/area")
     public ResponseEntity<Double> returnRoomArea(@PathVariable String roomName,
                                                  @PathVariable String propName) {
@@ -58,6 +59,15 @@ public class RealEstateController {
         RealEstate realEstate = realEstateService.findByName(propName);
 
         return ResponseEntity.ok(realEstateService.getRealEstatePrice(realEstate));
+    }
+
+    /** Ana Preis **/
+    @GetMapping("/realestate/{propName}/largestRoom")
+    public ResponseEntity<Room> getLargestRoom(@PathVariable String propName) {
+
+        RealEstate realEstate = realEstateService.findByName(propName);
+
+        return ResponseEntity.ok(roomService.getBiggestRoom(realEstate));
     }
 
     @PostMapping("/realestate")
