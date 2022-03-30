@@ -5,6 +5,7 @@ import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,37 @@ public class RealEstateServiceTest {
     @InjectMocks
     private RealEstateService realEstateService;
 
+    /**
+     * @author Ana preis
+     */
+    @Mock
+    RealEstate i1 = new RealEstate();
+    @InjectMocks
+    Room r1 = new Room();
+    @InjectMocks
+    Room r2 = new Room();
+
+    /**
+     * @author Ana preis
+     */
+    @BeforeEach
+    public void setUp() {
+        r1.setRoomName("TestRoom");
+        r1.setRoomLength(15.0);
+        r1.setRoomWidth(10.0);
+
+        r2.setRoomName("TestRoom2");
+        r2.setRoomLength(30.0);
+        r2.setRoomWidth(30.0);
+
+        List<Room> roomList = new ArrayList<>();
+        roomList.add(r1);
+        roomList.add(r2);
+
+        i1.setPropName("Imovel");
+        i1.setDistrict (new District("Trindade", BigDecimal.valueOf(300)));
+        i1.setRooms(roomList);
+    }
 
     /**
      * @author Felipe Myose
@@ -89,6 +121,5 @@ public class RealEstateServiceTest {
         BigDecimal price = realEstateService.getRealEstatePrice(i1);
 
         Assertions.assertEquals(BigDecimal.valueOf(315000.0) , price);
-
     }
 }
