@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,5 +129,39 @@ public class RealEstateServiceTest {
         Mockito.when(realEstateRepository.findAll()).thenReturn(realEstateList);
 
         Assertions.assertEquals(realEstateList, realEstateService.getAll());
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+
+    @Test
+    public void shouldBeAbleToFindARealEstateByName() {
+        RealEstate mockRealEstate = new RealEstate("Casa", new District("Jardim 1", BigDecimal.valueOf(500.0)), List.of(new Room(
+                "sala", 15.0, 10.0
+        )));
+
+        Mockito.when(realEstateRepository.findByName(ArgumentMatchers.any())).thenReturn(mockRealEstate);
+
+        RealEstate result = realEstateService.findByName("Casa");
+
+        Assertions.assertEquals(mockRealEstate, result);
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+
+    @Test
+    public void shouldBeAbleToCreateARealEstate() {
+        RealEstate mockRealEstate = new RealEstate("Casa", new District("Jardim 1", BigDecimal.valueOf(500.0)), List.of(new Room(
+                "sala", 15.0, 10.0
+        )));
+
+        Mockito.when(realEstateRepository.save(ArgumentMatchers.any())).thenReturn(mockRealEstate);
+
+        RealEstate result = this.realEstateService.save(mockRealEstate);
+
+        assertThat(result).usingRecursiveComparison().isEqualTo(mockRealEstate);
     }
 }
