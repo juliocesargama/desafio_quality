@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "a6894db3-ec74-401c-86f1-3924380ecc75",
+		"name": "desafio_quality_realestate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get realestate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/:propName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						":propName"
+					],
+					"variable": [
+						{
+							"key": "propName",
+							"value": "Eduardo Afonso"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get realestate room area",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/:propName/:roomName/area",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						":propName",
+						":roomName",
+						"area"
+					],
+					"variable": [
+						{
+							"key": "propName",
+							"value": "Eduardo Afonso"
+						},
+						{
+							"key": "roomName",
+							"value": "Sala"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get area by room",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/:propName/:roomName/area",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						":propName",
+						":roomName",
+						"area"
+					],
+					"query": [
+						{
+							"key": "nameRealEstate",
+							"value": null,
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "propName",
+							"value": "Eduardo Afonso"
+						},
+						{
+							"key": "roomName",
+							"value": "Cozinha"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add realestate 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n    \"propName\": \"Eduardo Afonso\",\n    \"district\": {\n      \"propDistrict\": \"Bairro areais\",\n      \"valueDistrictM2\": 250.00\n    },\n    \"rooms\": [\n      {\n        \"roomName\": \"Cozinha\",\n        \"roomWidth\": 10.0,\n        \"roomLength\": 10.0\n      },\n      {\n        \"roomName\": \"Sala\",\n        \"roomWidth\": 8.0,\n        \"roomLength\": 6.0\n      },\n      {\n        \"roomName\": \"Bainheiro\",\n        \"roomWidth\": 5.0,\n        \"roomLength\": 5.0\n      },\n      {\n        \"roomName\": \"Quarto um\",\n        \"roomWidth\": 12.0,\n        \"roomLength\": 6.0\n      },\n      {\n        \"roomName\": \"Quarto dois\",\n        \"roomWidth\": 7.0,\n        \"roomLength\": 6.0\n      }\n    ]\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/realestate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add realestate 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n    \"propName\": \"Maria Joaquina\",\n    \"district\": {\n      \"propDistrict\": \"Bairro Janaina\",\n      \"valueDistrictM2\": 250.00\n    },\n    \"rooms\": [\n      {\n        \"roomName\": \"Cozinha\",\n        \"roomWidth\": 8.0,\n        \"roomLength\": 10.0\n      },\n      {\n        \"roomName\": \"Sala\",\n        \"roomWidth\": 12.0,\n        \"roomLength\": 9.0\n      },\n      {\n        \"roomName\": \"Bainheiro\",\n        \"roomWidth\": 7.0,\n        \"roomLength\": 6.0\n      },\n      {\n        \"roomName\": \"Quarto um\",\n        \"roomWidth\": 13.0,\n        \"roomLength\": 13.0\n      },\n      {\n        \"roomName\": \"Quarto dois\",\n        \"roomWidth\": 9.0,\n        \"roomLength\": 9.0\n      }\n    ]\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/realestate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get area by room",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/:propName/areabyroom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						":propName",
+						"areabyroom"
+					],
+					"variable": [
+						{
+							"key": "propName",
+							"value": "Eduardo Afonso"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get total area",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/:propName/totalarea",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						":propName",
+						"totalarea"
+					],
+					"variable": [
+						{
+							"key": "propName",
+							"value": "Eduardo Afonso"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a realestate price",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/:propName/price",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						":propName",
+						"price"
+					],
+					"variable": [
+						{
+							"key": "propName",
+							"value": "Eduardo Afonso"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get largest room",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realestate/:propName/largestroom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realestate",
+						":propName",
+						"largestroom"
+					],
+					"variable": [
+						{
+							"key": "propName",
+							"value": "Eduardo Afonso"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
