@@ -22,10 +22,7 @@ public class RoomController {
                                                  @PathVariable String propName) {
 
         RealEstate realEstate = realEstateService.getRealEstate(propName);
-        Room room = realEstate.getRooms().stream()
-                                         .map(r -> roomService.getRoomByName(propName))
-                                         .findFirst()
-                                         .get();
+        Room room = roomService.findRoomInRealEstate(propName,realEstate.getRooms());
 
         return ResponseEntity.ok(roomService.getRoomArea(room));
     }

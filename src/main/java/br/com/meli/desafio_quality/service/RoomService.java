@@ -27,6 +27,13 @@ public class RoomService {
                 .get();
     }
 
+    public Room findRoomInRealEstate(String propName, List<Room> rooms){
+        return  rooms.stream()
+                .map(r -> this.getRoomByName(propName))
+                .findFirst()
+                .get();
+    }
+
     public Room getBiggestRoom(RealEstate realEstate) {
         List<Room> rooms = realEstate.getRooms();
         rooms.sort(Comparator.comparing(room -> getRoomArea(room).shortValue()));
