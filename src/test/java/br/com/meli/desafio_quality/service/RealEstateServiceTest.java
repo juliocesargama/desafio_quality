@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Arrays;
+
 @ExtendWith(MockitoExtension.class)
 public class RealEstateServiceTest {
 
@@ -24,6 +26,24 @@ public class RealEstateServiceTest {
 
     @InjectMocks
     private RealEstateService realEstateService;
+
+
+    /**
+     * @author Felipe Myose
+     */
+    @Test
+    public void testGetRoomByNameExistingRoom() {
+        String roomName = "TestRoom";
+        Room r1 = new Room("TestRoom", 10.0, 15.0);
+        Room r2 = new Room("TestRoom2", 30.0, 30.0);
+        List<Room> roomList = new ArrayList<>(Arrays.asList(r1,r2));
+        District d1 = new District("DistrictName", BigDecimal.valueOf(1000));
+        RealEstate i1 = new RealEstate("PropName", d1, roomList);
+
+        Room room = realEstateService.getRoomByName(i1, roomName);
+
+        Assertions.assertEquals(r1, room);
+    }
 
     /**
      * @author Ana preis
