@@ -4,6 +4,8 @@ import br.com.meli.desafio_quality.entity.District;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
+import br.com.meli.desafio_quality.exception.MissingRealEstateException;
+import br.com.meli.desafio_quality.exception.handler.ExceptionRepositoryHandler;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.throwable;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -160,8 +164,22 @@ public class RealEstateServiceTest {
 
         Mockito.when(realEstateRepository.save(ArgumentMatchers.any())).thenReturn(mockRealEstate);
 
-        RealEstate result = this.realEstateService.save(mockRealEstate);
+        RealEstate result = realEstateService.save(mockRealEstate);
 
         assertThat(result).usingRecursiveComparison().isEqualTo(mockRealEstate);
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+
+    @Test
+    public void shouldNotBeAbleToFindRealEstateIfDoesntExist() {
+        String message = "Imóvel não encontrado";
+        Mockito.when(realEstateRepository.findByName("Not_exists")).thenThrow( new MissingRealEstateException("Imóvel não encontrado"));
+
+        RuntimeException exception =  Assertions.assertThrows(MissingRealEstateException.class, () -> realEstateService.findByName("Not_exists"));
+
+        assertThat(exception.getMessage()).isEqualTo(message);
     }
 }
