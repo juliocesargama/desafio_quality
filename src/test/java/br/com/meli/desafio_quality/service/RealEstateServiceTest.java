@@ -49,4 +49,26 @@ public class RealEstateServiceTest {
         Assertions.assertEquals(dto2.getRoomArea(), areaList.get(1).getRoomArea());
 
     }
+
+    /**
+     * @author Ana preis
+     */
+    @Test
+    public void getRealEstatePriceTest(){
+
+        Room r1 = new Room("TestRoom", 10.0, 15.0);
+        Room r2 = new Room("TestRoom2", 30.0, 30.0);
+        List<Room> roomList = new ArrayList<>();
+        roomList.add(r1);
+        roomList.add(r2);
+        RealEstate i1 = new RealEstate("Imovel", new District("Trindade", BigDecimal.valueOf(300)), roomList);
+
+        Mockito.when(roomService.getRoomArea(r1)).thenReturn(150.0);
+        Mockito.when(roomService.getRoomArea(r2)).thenReturn(900.0);
+
+        BigDecimal price = realEstateService.getRealEstatePrice(i1);
+
+        Assertions.assertEquals(BigDecimal.valueOf(315000.0) , price);
+
+    }
 }
