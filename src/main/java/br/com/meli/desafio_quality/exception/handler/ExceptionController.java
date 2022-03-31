@@ -1,7 +1,8 @@
 package br.com.meli.desafio_quality.exception.handler;
 
 import br.com.meli.desafio_quality.entity.ErrorDTO;
-import br.com.meli.desafio_quality.entity.RealEstate;
+import br.com.meli.desafio_quality.exception.MissingRealEstateException;
+import br.com.meli.desafio_quality.exception.MissingRoomException;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,4 +36,16 @@ public class ExceptionController {
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MissingRoomException.class)
+    public ResponseEntity<?> handleModelsValidations(MissingRoomException e) {
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .name("Requisição mal formatada")
+                .description(e.getMessage())
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
+    }
+
 }
