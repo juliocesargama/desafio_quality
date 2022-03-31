@@ -5,6 +5,7 @@ import br.com.meli.desafio_quality.entity.ErrorDTO;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
+import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -207,7 +209,6 @@ public class RealEstateControllerIT {
         Assertions.assertEquals(BigDecimal.valueOf(expectdPrice2), totalPrice2);
     }
 
-
     /**
      * @author Julio Gama
      * Teste de integração para verificar se passando os parâmetros corretos, é realizado o cálculo  da área do cômodo de forma esperada.
@@ -262,5 +263,65 @@ public class RealEstateControllerIT {
 
         ErrorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(),typeReference);
         Assertions.assertEquals("Comodo nao encontrado", response.getDescription());
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera um statusCode 200 com o resutado total da area do Imóvel.git
+     */
+    @Test
+    public void shouldCalcTotalAreaOfRealEstate() throws Exception{
+        realEstateRepository.save(i1);
+        String expected = "900.0";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/Imovel1/totalarea"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        Assertions.assertEquals(expected, result.getResponse().getContentAsString());
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera um status de error 400
+     */
+    @Test
+    public void shouldNotBeAbleCalcTotalAreaOfRealEstate() throws Exception{
+
+        String expectedMessage = "Imovel nao encontrado";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/not_exists/totalarea"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera um status de error 400
+     */
+    @Test
+    public void shouldBeAbleFailException() throws Exception{
+
+        RealEstate mockRealEstate = new RealEstate("Casa",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
+
+        realEstateRepository.save(mockRealEstate);
+
+        String expectedMessage = "Comodos nao foram encontrados.";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/Casa/totalarea"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        System.out.println(error.getDescription());
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
     }
 }
