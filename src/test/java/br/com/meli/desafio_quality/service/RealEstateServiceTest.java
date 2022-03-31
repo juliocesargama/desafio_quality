@@ -138,6 +138,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Marcelo Leite
+     * teste unitario do metodo que retorna todos os imoveis caso de sucesso.
      */
 
     @Test
@@ -154,6 +155,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Marcelo Leite
+     * teste unitario do metodo que retonar todos os imoveis, caso de não ter imovel cadastrado, retorna vazio.
      */
 
     @Test
@@ -240,6 +242,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Marcelo Leite
+     * teste unitario se existe o distrito.
      */
     @Test
     public void shouldDistrictTest() {
