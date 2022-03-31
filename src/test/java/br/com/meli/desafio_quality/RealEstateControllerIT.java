@@ -1,9 +1,11 @@
 package br.com.meli.desafio_quality;
 
 import br.com.meli.desafio_quality.entity.District;
+import br.com.meli.desafio_quality.entity.ErrorDTO;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
+import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
