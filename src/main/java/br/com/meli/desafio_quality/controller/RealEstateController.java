@@ -26,6 +26,7 @@ public class RealEstateController {
 
     /**
      * @author Julio Gama
+     * Endpoint para retornar todas as propriedades cadastradas.
      */
     @GetMapping("/realestate/all")
     public ResponseEntity<List<RealEstate>> getAllRealEstates(){
@@ -44,6 +45,7 @@ public class RealEstateController {
     /**
      * @author Ana preis,      Julio Gama
      * criação desse endpoint, refatoração
+     * Refatoração para realizar o cálculo da área do cômodo sem chamada do Service de Cômodo.
      */
     @GetMapping("/realestate/{propName}/{roomName}/area")
     public ResponseEntity<Double> returnRoomArea(@PathVariable String roomName,

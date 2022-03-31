@@ -200,4 +200,63 @@ public class RealEstateControllerIT {
         Assertions.assertEquals(BigDecimal.valueOf(expectdPrice), totalPrice);
         Assertions.assertEquals(BigDecimal.valueOf(expectdPrice2), totalPrice2);
     }
+
+
+    /**
+     * @author Julio Gama
+     * Teste de integração para verificar se passando os parâmetros corretos, é realizado o cálculo  da área do cômodo de forma esperada.
+     */
+    @Test
+    public void getRoomAreaTest() throws Exception{
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/{roomName}/area","Imovel1","TestRoom1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TypeReference<Double> typeReference = new TypeReference<Double>() {};
+        Double roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(150.0,roomAreaFromResponse.doubleValue());
+
+    }
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado um imóvel inválido.
+     */
+    @Test
+    public void getRoomAreaPropNameInvalid() throws Exception{
+
+        realEstateRepository.save(i1);
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/{roomName}/area","Imovel","TestRoom"))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+
+            TypeReference<ErrorDTO> typeReference = new TypeReference<>() {};
+
+            ErrorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(),typeReference);
+            Assertions.assertEquals("Imovel nao encontrado", response.getDescription());
+    }
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado um cômodo inválido.
+     */
+    @Test
+    public void getRoomAreaRoomNameInvalid() throws Exception{
+
+        realEstateRepository.save(i1);
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/{roomName}/area","Imovel1","Quarto"))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<>() {};
+
+        ErrorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(),typeReference);
+        Assertions.assertEquals("Comodo nao encontrado", response.getDescription());
+    }
+
+
 }
