@@ -6,7 +6,6 @@ import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.exception.MissingRealEstateException;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
-import br.com.meli.desafio_quality.exception.handler.ExceptionRepositoryHandler;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.throwable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -117,6 +115,18 @@ public class RealEstateServiceTest {
         BigDecimal price = realEstateService.getRealEstatePrice(i1);
 
         Assertions.assertEquals(BigDecimal.valueOf(315000.0) , price);
+    }
+
+    /**
+     * @author Ana preis
+     */
+    @Test
+    public void shouldNotGetRealEstatePriceTest(){
+        String message = "Imóvel não encontrado";
+        Mockito.when(realEstateService.getRealEstatePrice(i1)).thenThrow(new MissingRealEstateException("Imóvel não encontrado"));
+        RuntimeException exception =  Assertions.assertThrows(MissingRealEstateException.class, () -> realEstateService.getRealEstatePrice(i1));
+
+        assertThat(exception.getMessage()).isEqualTo(message);
     }
 
     /**
