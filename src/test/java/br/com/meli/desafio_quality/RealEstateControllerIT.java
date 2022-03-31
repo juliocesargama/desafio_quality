@@ -91,10 +91,16 @@ public class RealEstateControllerIT {
         i2.setRooms(roomList2);
     }
 
+    /**
+     * @author Felipe Myose
+     * Limpa a base de dados (lista) após a execução de cada teste
+     */
     @AfterEach
     public void resetData() {
-        for (RealEstate rs: realEstateRepository.findAll()) {
-            realEstateRepository.delete(rs);
+        List<RealEstate> temp = realEstateRepository.findAll();
+        int size = temp.size();
+        for (int i = 0; i < size; i++) {
+            realEstateRepository.delete(temp.get(0));
         }
     }
 
