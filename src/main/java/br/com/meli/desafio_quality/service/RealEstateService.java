@@ -43,7 +43,7 @@ public class RealEstateService {
     public Double getRealStateTotalArea(RealEstate realEstate){
 
             if(realEstate.getRooms().size() == 0){
-                throw new MissingRoomException("Cômodos não foram encontrados.");
+                throw new MissingRoomException("Comodos nao foram encontrados.");
             }
                 return realEstate.getRooms().stream().mapToDouble(room -> roomService.getRoomArea(room)).sum();
     }
@@ -54,7 +54,7 @@ public class RealEstateService {
     public List<RoomAreaDTO> getAreaByRoom(RealEstate realEstate) {
 
         if(realEstate.getRooms().size() == 0){
-            throw new MissingRoomException("Cômodos não foram encontrados.");
+            throw new MissingRoomException("Comodos nao foram encontrados.");
         }
 
         return realEstate.getRooms().stream().map(room -> new RoomAreaDTO(room.getRoomName(), roomService.getRoomArea(room)))
