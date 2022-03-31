@@ -7,7 +7,9 @@ import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,22 +37,58 @@ public class RealEstateControllerIT {
     @Autowired
     ObjectMapper objectMapper;
 
+    /**
+     * @author Ana preis
+     */
+    RealEstate i1 = new RealEstate();
+    RealEstate i2 = new RealEstate();
+    Room r1 = new Room();
+    Room r2 = new Room();
+    Room r3 = new Room();
+    Room r4 = new Room();
+
+    /**
+     * @author Ana preis
+     */
+    @BeforeEach
+    public void setUp() {
+        r1.setRoomName("TestRoom1");
+        r1.setRoomWidth(15.0);
+        r1.setRoomLength(10.0);
+
+        r2.setRoomName("TestRoom2");
+        r2.setRoomWidth(25.0);
+        r2.setRoomLength(30.0);
+
+        r3.setRoomName("TestRoom3");
+        r3.setRoomWidth(10.0);
+        r3.setRoomLength(10.0);
+
+        r4.setRoomName("TestRoom4");
+        r4.setRoomWidth(5.0);
+        r4.setRoomLength(5.0);
+
+        List<Room> roomList1 = new ArrayList<>(Arrays.asList(r1,r2));
+        List<Room> roomList2 = new ArrayList<>(Arrays.asList(r3,r4));
+
+        District district1 = new District("Trindade1", BigDecimal.valueOf(300));
+        District district2 = new District("Trindade2", BigDecimal.valueOf(200));
+
+        i1.setPropName("Imovel1");
+        i1.setDistrict(district1);
+        i1.setRooms(roomList1);
+
+        i2.setPropName("Imovel2");
+        i2.setDistrict(district2);
+        i2.setRooms(roomList2);
+    }
+
 
     /**
      * @author Felipe Myose
      */
     @Test
     public void getAllRealEstatesTest() throws Exception {
-        Room r1 = new Room("TestRoom1", 15.0, 10.0);
-        Room r2 = new Room("TestRoom2", 30.0, 30.0);
-        Room r3 = new Room("TestRoom3", 10.0, 10.0);
-        Room r4 = new Room("TestRoom4", 5.0, 5.0);
-        List<Room> roomList1 = new ArrayList<>(Arrays.asList(r1,r2));
-        List<Room> roomList2 = new ArrayList<>(Arrays.asList(r3,r4));
-        District district1 = new District("Trindade1", BigDecimal.valueOf(300));
-        District district2 = new District("Trindade2", BigDecimal.valueOf(200));
-        RealEstate i1 = new RealEstate("Imovel1", district1, roomList1);
-        RealEstate i2 = new RealEstate("Imovel2", district2, roomList2);
 
         realEstateRepository.save(i1);
         realEstateRepository.save(i2);
