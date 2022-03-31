@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -96,8 +97,6 @@ public class RealEstateService {
      * @author Felipe Myose
      */
     public Room getRoomByName(RealEstate realEstate, String roomName) {
-        return realEstate.getRooms().stream().filter(room -> room.getRoomName().equals(roomName))
-                .findFirst()
-                .get();
+        return realEstate.getRooms().stream().filter(room -> room.getRoomName().equals(roomName)).findFirst().orElse(null);
     }
 }
