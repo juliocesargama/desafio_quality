@@ -229,4 +229,17 @@ public class RealEstateServiceTest {
 
         Assertions.assertThrows(NullPointerException.class, () -> realEstateService.getRealStateTotalArea(i1));
     }
+
+    /**
+     * @author Marcelo Leite
+     */
+    @Test
+    public void shouldDistrictTest() {
+        List<RealEstate> realEstateList = new ArrayList<>();
+        realEstateList.add(i1);
+
+        Mockito.when(realEstateRepository.findAll()).thenReturn(realEstateList);
+
+        Assertions.assertEquals(realEstateList.get(0).getDistrict(), realEstateService.getAll().get(0).getDistrict());
+    }
 }
