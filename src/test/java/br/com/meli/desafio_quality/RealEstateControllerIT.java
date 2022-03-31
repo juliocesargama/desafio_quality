@@ -29,8 +29,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -321,7 +320,228 @@ public class RealEstateControllerIT {
         TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
         ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
 
-        System.out.println(error.getDescription());
+
         Assertions.assertEquals(expectedMessage,  error.getDescription());
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera criar um Imóvel e recber retorno 201 com o payload do imóvel criado.
+     */
+    @Test
+    public void shouldCreateRealEstate() throws Exception {
+
+        String  realEstate = objectMapper.writeValueAsString(i1);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.propName").value("Imovel1"));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 409 com o payload error com messagem que o imóvel já existe.
+     */
+
+    @Test
+    public void shouldNotCreateRealEstateThatAlreadyExists() throws Exception {
+        realEstateRepository.save(i1);
+
+        String  realEstate = objectMapper.writeValueAsString(i1);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.description").value("Imóvel já existe"));
+    }
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com messagem O nome da propriedade não pode ficar vazio.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateAnUnnamedPropName() throws Exception{
+        RealEstate mockRealEstate = new RealEstate(null,
+                new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O nome da propriedade não pode ficar vazio."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com messagem O nome da propriedade deve começar com letra maiúscula.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateFirstLetterOfTheLowercaseName() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("letraMinúscula",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O nome da propriedade deve começar com letra maiúscula."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem O comprimento do nome da propriedade não pode exceder 30 caracteres.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWhoseNameExceeds30Characters() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("NomeMuitoCompridoParaEstaPropeidade",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O comprimento do nome da propriedade não pode exceder 30 caracteres."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem O nome do cômodo deve começar com uma letra maiúscula.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateRoomNameFirstLetterOfTheLowercase() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "sala", 15.0, 10.0)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O nome do cômodo deve começar com uma letra maiúscula."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem O nome do cômodo não pode excder 30 caracteres.
+     */
+
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateRoomNameExceeds30Characters() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "NomeMuitoCompridoParaEstaPropeidade", 15.0, 10.0)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O nome do cômodo não pode excder 30 caracteres."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem O nome do cômodo não pode estar vazio.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWithRoomNameEmpty() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                null, 15.0, 10.0)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O nome do cômodo não pode estar vazio."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem A largura do cômodo não pode estar vazia.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWithRoomWidthEmpty() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "Casa", null, 10.0)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("A largura do cômodo não pode estar vazia."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem A largura máxima permitida por cômodo é de 25 metros.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWithRoomMaximumWidthIs25Meters() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "Casa", 30.0, 10.0)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("A largura máxima permitida por cômodo é de 25 metros."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem O comprimento máximo permitido por cômodo é de 33 metros.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWithRoomMaximumLengthIs33Meters() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "Casa", 25.0, 40.0)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O comprimento máximo permitido por cômodo é de 33 metros."));
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem O comprimento do cômodo não pode estar vazio.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWithRoomLengthEmpty() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "Casa", 25.0, null)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+
+        mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstate))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[*].description").value("O comprimento do cômodo não pode estar vazio."));
     }
 }
