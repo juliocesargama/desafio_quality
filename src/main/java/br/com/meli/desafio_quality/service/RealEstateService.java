@@ -3,6 +3,7 @@ package br.com.meli.desafio_quality.service;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
+import br.com.meli.desafio_quality.exception.MissingRoomException;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,10 @@ public class RealEstateService {
      */
     public Double getRealStateTotalArea(RealEstate realEstate){
 
-        return realEstate.getRooms().stream().mapToDouble(room -> roomService.getRoomArea(room)).sum();
-
+            if(realEstate.getRooms().size() == 0){
+                throw new MissingRoomException("Cômodo não foi encontrado.");
+            }
+                return realEstate.getRooms().stream().mapToDouble(room -> roomService.getRoomArea(room)).sum();
     }
 
     /**

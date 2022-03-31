@@ -196,4 +196,27 @@ public class RealEstateServiceTest {
 
         assertThat(exception.getMessage()).isEqualTo(message);
     }
+
+    /**
+     * @author Julio Gama
+     */
+    @Test
+    public void shouldReturnRealStateTotalArea(){
+
+        Mockito.when(roomService.getRoomArea(r1)).thenReturn(150.0);
+        Mockito.when(roomService.getRoomArea(r2)).thenReturn(900.0);
+
+        Assertions.assertEquals(1050.0, realEstateService.getRealStateTotalArea(i1));
+
+    }
+    /**
+     * @author Julio Gama
+     */
+    @Test
+    public void shouldNotReturnRealStateTotalArea(){
+
+        Mockito.when(roomService.getRoomArea(null)).thenThrow(new NullPointerException());
+
+        Assertions.assertThrows(NullPointerException.class, () -> realEstateService.getRealStateTotalArea(i1));
+    }
 }
