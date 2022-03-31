@@ -3,6 +3,9 @@
 A empresa "Seu Imóvel" precisa ser capaz de calcular a metragem e o custo dos diferentes imóveis que possui em sua carteira de clientes.
 Para isso, solicita de cada imóvel: um nome do imóvel, um bairro (nome do bairro e valor do metro quadrado no bairro) e a quantidade de cômodos que cada imóvel tem. Ao mesmo tempo, cada cômodo contém um nome, uma largura e um comprimento.
 
+- Quadro Kanban com as tasks realizadas [Disponível aqui](https://github.com/juliocesargama/desafio_quality/projects/2).
+
+
 ### Dados de Entrada:
 
 <img width="634" alt="image" src="https://user-images.githubusercontent.com/70298438/161097439-703a5fd7-f466-48ea-9636-9a168d9bbd6e.png">
