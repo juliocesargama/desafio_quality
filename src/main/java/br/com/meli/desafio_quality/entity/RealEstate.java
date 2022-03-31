@@ -21,7 +21,7 @@ import java.util.List;
 public class RealEstate {
 
   @NotBlank(message = "O nome da propriedade não pode ficar vazio.")
-  @Pattern(regexp = "[A-Z][a-záàâãéèêíïóôõöúçñ]+", message = "O nome da propriedade deve começar com letra maiúscula.")
+  @Pattern(regexp = "([A-Z])[\\s|[0-9]|A-Z|a-záàâãéèêíïóôõöúçñ]*", message = "O nome da propriedade deve começar com letra maiúscula.")
   @Size(max = 30, message = "O comprimento do nome da propriedade não pode exceder 30 caracteres.")
   private String propName;
 
