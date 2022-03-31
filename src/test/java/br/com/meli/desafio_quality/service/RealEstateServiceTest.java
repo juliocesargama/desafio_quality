@@ -5,6 +5,7 @@ import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.exception.MissingRealEstateException;
+import br.com.meli.desafio_quality.exception.MissingRoomException;
 import br.com.meli.desafio_quality.exception.handler.ExceptionRepositoryHandler;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.junit.jupiter.api.Assertions;
@@ -90,6 +91,19 @@ public class RealEstateServiceTest {
         Assertions.assertEquals(dto1.getRoomArea(), areaList.get(0).getRoomArea());
         Assertions.assertEquals(dto2.getRoomArea(), areaList.get(1).getRoomArea());
 
+    }
+
+    /**
+     * @author Ana preis
+     */
+    @Test
+    public void shouldNotGetAreaByRoomTest(){
+        String message = "Área do comodo não encontrada";
+        Mockito.when(roomService.getRoomArea(r1)).thenThrow(new MissingRoomException("Área do comodo não encontrada"));
+
+        RuntimeException exception =  Assertions.assertThrows(MissingRoomException.class, () -> roomService.getRoomArea(r1));
+
+        assertThat(exception.getMessage()).isEqualTo(message);
     }
 
     /**
