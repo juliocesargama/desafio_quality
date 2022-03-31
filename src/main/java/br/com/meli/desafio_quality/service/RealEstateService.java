@@ -98,6 +98,7 @@ public class RealEstateService {
      * @author Felipe Myose
      */
     public Room getRoomByName(RealEstate realEstate, String roomName) {
-        return realEstate.getRooms().stream().filter(room -> room.getRoomName().equals(roomName)).findFirst().orElse(null);
+        return realEstate.getRooms().stream().filter(room -> room.getRoomName().equals(roomName)).findFirst()
+                .orElseThrow(() -> new MissingRoomException("Comodo nao encontrado"));
     }
 }

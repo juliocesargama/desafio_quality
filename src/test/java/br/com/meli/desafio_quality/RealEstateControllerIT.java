@@ -263,6 +263,4 @@ public class RealEstateControllerIT {
         ErrorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(),typeReference);
         Assertions.assertEquals("Comodo nao encontrado", response.getDescription());
     }
-
-
 }
