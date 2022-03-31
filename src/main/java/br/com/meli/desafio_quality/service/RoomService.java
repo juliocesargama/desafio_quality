@@ -14,6 +14,7 @@ public class RoomService {
 
     /**
      * @author Ana preis
+     *  Retorna a área total do comodo em m2.
      */
     public Double getRoomArea(Room room) {
         return room.getRoomWidth() * room.getRoomLength();

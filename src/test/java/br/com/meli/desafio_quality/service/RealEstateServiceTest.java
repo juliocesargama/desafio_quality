@@ -37,6 +37,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Ana preis
+     * Objetos utilizados em cada teste unitário.
      */
     RealEstate i1 = new RealEstate();
     Room r1 = new Room();
@@ -44,6 +45,7 @@ public class RealEstateServiceTest {
     
     /**
      * @author Ana preis
+     *  Setando os objetos antes de cada teste unitário.
      */
     @BeforeEach
     public void setUp() {
@@ -77,6 +79,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Ana preis
+     *  Testa se a área dos comodos estão retornando corretas.
      */
     @Test
     public void getAreaByRoomTest(){
@@ -94,6 +97,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Ana preis
+     *  Testa se, quando a área dos comodos não estão corretas, retorna a exceção.
      */
     @Test
     public void shouldNotGetAreaByRoomTest(){
@@ -107,6 +111,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Ana preis
+     *  Testa se o método getRealEstatePrice retorna o valor correto.
      */
     @Test
     public void getRealEstatePriceTest(){
@@ -120,6 +125,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Ana preis
+     *  Testa se, quando o método getRealEstatePrice não retorna o valor correto, retorna a exceção.
      */
     @Test
     public void shouldNotGetRealEstatePriceTest(){
