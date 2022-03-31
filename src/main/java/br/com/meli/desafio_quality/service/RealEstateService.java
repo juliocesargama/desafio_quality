@@ -4,13 +4,12 @@ import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
+import br.com.meli.desafio_quality.exception.RealEstateAlreadyExistsException;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,11 +60,22 @@ public class RealEstateService {
     }
 
     /**
-     * @author Antonio Hugo
+     * @author Antonio Hugo , Ana Preis
      */
     public RealEstate save(RealEstate realEstate) {
+        if(isRealEstateInRepo(realEstate)) {
+            throw new RealEstateAlreadyExistsException("Imóvel já existe");
+        }
         return realEstateRepository.save(realEstate);
     }
+
+    /**
+     * @author Ana preis
+     */
+    public boolean isRealEstateInRepo(RealEstate realEstate) {
+        return realEstateRepository.findAll().stream().anyMatch(a -> a.getPropName().equals(realEstate.getPropName()));
+    }
+
 
     /**
      * @author Antonio Hugo

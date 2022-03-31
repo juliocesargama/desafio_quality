@@ -2,6 +2,7 @@ package br.com.meli.desafio_quality.exception.handler;
 
 import br.com.meli.desafio_quality.entity.ErrorDTO;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
+import br.com.meli.desafio_quality.exception.RealEstateAlreadyExistsException;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,4 +56,20 @@ public class ExceptionController {
                 .build();
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
+
+    /**
+     * @author Ana preis
+     */
+    @ExceptionHandler(RealEstateAlreadyExistsException.class)
+    public ResponseEntity<?> handleModelsValidations(RealEstateAlreadyExistsException e) {
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .name("Conflito na requisição")
+                .description(e.getMessage())
+                .statusCode(HttpStatus.CONFLICT.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+        return new ResponseEntity<>(errorDTO, HttpStatus.CONFLICT);
+    }
+
+
 }
