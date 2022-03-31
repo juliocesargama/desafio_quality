@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class RealEstateController {
      * @author Felipe Myose
      */
     @GetMapping("/realestate/{propName}/areabyroom")
-    public ResponseEntity<List<RoomAreaDTO>> returAreaByRoom(@PathVariable String propName) {
+    public ResponseEntity<List<RoomAreaDTO>> returnAreaByRoom(@PathVariable String propName) {
 
         RealEstate realEstate = realEstateService.findByName(propName);
         List<RoomAreaDTO> roomAreas = realEstateService.getAreaByRoom(realEstate);
@@ -106,7 +107,7 @@ public class RealEstateController {
      * @author Antonio Hugo Freire
      * **/
     @PostMapping("/realestate")
-    public ResponseEntity<RealEstate> createRealEstate(@RequestBody RealEstate realEstate) {
+    public ResponseEntity<RealEstate> createRealEstate(@Valid @RequestBody RealEstate realEstate) {
 
         RealEstate realEstateCreated = realEstateService.save(realEstate);
 
