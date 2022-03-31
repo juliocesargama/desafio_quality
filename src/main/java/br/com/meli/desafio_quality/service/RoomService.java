@@ -20,6 +20,10 @@ public class RoomService {
 
     public Room getBiggestRoom(RealEstate realEstate) {
         List<Room> rooms = realEstate.getRooms();
+        if(rooms == null || rooms.size() == 0){
+            return null;
+        }
+
         rooms.sort(Comparator.comparing(room -> getRoomArea(room).shortValue()));
 
         return rooms.get(rooms.size() - 1);
