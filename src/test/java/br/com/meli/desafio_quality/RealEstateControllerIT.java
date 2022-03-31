@@ -7,16 +7,11 @@ import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,6 +45,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana preis
+     *  Objetos utilizados em cada teste de integração.
      */
     RealEstate i1 = new RealEstate();
     RealEstate i2 = new RealEstate();
@@ -60,6 +56,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana preis
+     *  Setando os objetos utilizados antes de cada teste de integração
      */
     @BeforeEach
     public void setUp() {
@@ -137,6 +134,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana Preis
+     *  Testa se endpoint getLargestRoom() retorna o r2 (maior comodo).
      */
     @Test
     public void getLargestRoom() throws Exception {
@@ -155,6 +153,8 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana Preis
+     *  Testa se, ao passar um imóvel inexistente para o endpoint getLargestRoom, retorna a exceção de Imóvel
+     *  não encontrado.
      */
     @Test
     public void getLargestRoomWithException() throws Exception {

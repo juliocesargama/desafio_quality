@@ -45,6 +45,7 @@ public class ExceptionController {
 
     /**
      * @author Ana preis
+     *  Tratamento da exceção de quando o comodo é inexistente.
      */
     @ExceptionHandler(MissingRoomException.class)
     public ResponseEntity<?> handleModelsValidations(MissingRoomException e) {
@@ -59,6 +60,7 @@ public class ExceptionController {
 
     /**
      * @author Ana preis
+     *  Tratamento da exceção de quando o imóvel já existe
      */
     @ExceptionHandler(RealEstateAlreadyExistsException.class)
     public ResponseEntity<?> handleModelsValidations(RealEstateAlreadyExistsException e) {

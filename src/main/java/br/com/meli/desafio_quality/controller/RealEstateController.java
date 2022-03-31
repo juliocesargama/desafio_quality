@@ -96,6 +96,7 @@ public class RealEstateController {
     /**
      * @author Ana preis
      * criação desse endpoint
+     *  Busca o comodo com maior área em m2 artavés do nome do imóvel.
      */
     @GetMapping("/realestate/{propName}/largestroom")
     public ResponseEntity<Room> getLargestRoom(@PathVariable String propName) {
