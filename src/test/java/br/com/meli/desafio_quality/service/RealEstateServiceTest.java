@@ -226,9 +226,10 @@ public class RealEstateServiceTest {
     @Test
     public void shouldNotReturnRealStateTotalArea(){
 
-        Mockito.when(roomService.getRoomArea(null)).thenThrow(new NullPointerException());
+        RealEstate realEstate = new RealEstate();
+        realEstate.setRooms(new ArrayList<>());
 
-        Assertions.assertThrows(NullPointerException.class, () -> realEstateService.getRealStateTotalArea(i1));
+        Assertions.assertThrows(MissingRoomException.class, () -> realEstateService.getRealStateTotalArea(realEstate));
     }
 
     /**
@@ -250,7 +251,7 @@ public class RealEstateServiceTest {
     @Test
     public void shouldNotBeAbleToGetAreaByRoom() {
         RealEstate mockRealEstate = new RealEstate("Casa", new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
-        String message = "Cômodo não foi encontrado.";
+        String message = "Cômodos não foram encontrados.";
 
         RuntimeException exception = Assertions.assertThrows(MissingRoomException.class, () -> realEstateService.getAreaByRoom(mockRealEstate));
         assertThat(exception.getMessage()).isEqualTo(message);
