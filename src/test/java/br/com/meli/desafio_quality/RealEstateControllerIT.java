@@ -8,16 +8,11 @@ import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,6 +47,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana preis
+     *  Objetos utilizados em cada teste de integração.
      */
     RealEstate i1 = new RealEstate();
     RealEstate i2 = new RealEstate();
@@ -62,6 +58,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana preis
+     *  Setando os objetos utilizados antes de cada teste de integração
      */
     @BeforeEach
     public void setUp() {
@@ -96,10 +93,16 @@ public class RealEstateControllerIT {
         i2.setRooms(roomList2);
     }
 
+    /**
+     * @author Felipe Myose
+     * Limpa a base de dados (lista) após a execução de cada teste
+     */
     @AfterEach
     public void resetData() {
-        for (RealEstate rs: realEstateRepository.findAll()) {
-            realEstateRepository.delete(rs);
+        List<RealEstate> temp = realEstateRepository.findAll();
+        int size = temp.size();
+        for (int i = 0; i < size; i++) {
+            realEstateRepository.delete(temp.get(0));
         }
     }
 
@@ -139,6 +142,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana Preis
+     *  Testa se endpoint getLargestRoom() retorna o r2 (maior comodo).
      */
     @Test
     public void getLargestRoom() throws Exception {
@@ -157,6 +161,8 @@ public class RealEstateControllerIT {
 
     /**
      * @author Ana Preis
+     *  Testa se, ao passar um imóvel inexistente para o endpoint getLargestRoom, retorna a exceção de Imóvel
+     *  não encontrado.
      */
     @Test
     public void getLargestRoomWithException() throws Exception {
@@ -204,7 +210,64 @@ public class RealEstateControllerIT {
     }
 
     /**
+     * @author Julio Gama
+     * Teste de integração para verificar se passando os parâmetros corretos, é realizado o cálculo  da área do cômodo de forma esperada.
+     */
+    @Test
+    public void getRoomAreaTest() throws Exception{
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/{roomName}/area","Imovel1","TestRoom1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TypeReference<Double> typeReference = new TypeReference<Double>() {};
+        Double roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(150.0,roomAreaFromResponse.doubleValue());
+
+    }
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado um imóvel inválido.
+     */
+    @Test
+    public void getRoomAreaPropNameInvalid() throws Exception{
+
+        realEstateRepository.save(i1);
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/{roomName}/area","Imovel","TestRoom"))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+
+            TypeReference<ErrorDTO> typeReference = new TypeReference<>() {};
+
+            ErrorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(),typeReference);
+            Assertions.assertEquals("Imovel nao encontrado", response.getDescription());
+    }
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado um cômodo inválido.
+     */
+    @Test
+    public void getRoomAreaRoomNameInvalid() throws Exception{
+
+        realEstateRepository.save(i1);
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/{roomName}/area","Imovel1","Quarto"))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<>() {};
+
+        ErrorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(),typeReference);
+        Assertions.assertEquals("Comodo nao encontrado", response.getDescription());
+    }
+
+    /**
      * @author Antonio Hugo Freire
+     * Este teste espera um statusCode 200 com o resutado total da arae do Imóvel.git
      */
     @Test
     public void shouldCalcTotalAreaOfRealEstate() throws Exception{
@@ -220,6 +283,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Antonio Hugo Freire
+     * Este teste espera um status de error 400
      */
     @Test
     public void shouldNotBeAbleCalcTotalAreaOfRealEstate() throws Exception{
@@ -238,6 +302,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Antonio Hugo Freire
+     * Este teste espera um status de error 400
      */
     @Test
     public void shouldBeAbleFailException() throws Exception{

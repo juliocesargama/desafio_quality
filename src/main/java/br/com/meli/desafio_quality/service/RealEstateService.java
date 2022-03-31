@@ -3,7 +3,6 @@ package br.com.meli.desafio_quality.service;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
-import br.com.meli.desafio_quality.exception.MissingRealEstateException;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
 import br.com.meli.desafio_quality.exception.RealEstateAlreadyExistsException;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +37,7 @@ public class RealEstateService {
 
     /**
      * @author Julio Gama
+     * Regra de negócio que verifica se há cômodos na propriedade, em caso positivo deve realizar o cálculo de cada área dos cômodos e somá-los
      */
     public Double getRealStateTotalArea(RealEstate realEstate){
 
@@ -70,6 +69,7 @@ public class RealEstateService {
 
     /**
      * @author Antonio Hugo , Ana Preis
+     *  Salva o imóvel apenas se ele ainda não existir, caso contrário joga a exceção.
      */
     public RealEstate save(RealEstate realEstate) {
         if(isRealEstateInRepo(realEstate)) {
@@ -80,6 +80,7 @@ public class RealEstateService {
 
     /**
      * @author Ana preis
+     *  Verifica se o imóvel já existe na lista de repositório pelo nome dele.
      */
     public boolean isRealEstateInRepo(RealEstate realEstate) {
         return realEstateRepository.findAll().stream().anyMatch(a -> a.getPropName().equals(realEstate.getPropName()));
