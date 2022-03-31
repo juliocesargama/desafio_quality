@@ -1,7 +1,6 @@
 package br.com.meli.desafio_quality.exception.handler;
 
 import br.com.meli.desafio_quality.entity.ErrorDTO;
-import br.com.meli.desafio_quality.exception.MissingRealEstateException;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.http.HttpStatus;
@@ -43,6 +42,9 @@ public class ExceptionController {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * @author Ana preis
+     */
     @ExceptionHandler(MissingRoomException.class)
     public ResponseEntity<?> handleModelsValidations(MissingRoomException e) {
         ErrorDTO errorDTO = ErrorDTO.builder()
@@ -53,5 +55,4 @@ public class ExceptionController {
                 .build();
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
-
 }
