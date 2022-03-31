@@ -10,6 +10,7 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -120,5 +121,34 @@ public class RealEstateControllerIT {
 
         Assertions.assertEquals(i1, realEstatesFromResponse.get(0));
         Assertions.assertEquals(i2, realEstatesFromResponse.get(1));
+    }
+
+    /**
+     * @author Marcelo Leite
+     */
+    @DisplayName("Test getRealEstatePrice() total price")
+    @Test
+    public void getRealEstatePriceTest() throws Exception {
+        realEstateRepository.save(i1);
+        realEstateRepository.save(i2);
+
+        MvcResult imovel1 = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/Imovel1/price"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        MvcResult imovel2 = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/Imovel2/price"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        TypeReference<BigDecimal> typeReference = new TypeReference<BigDecimal>() {};
+        BigDecimal totalPrice = objectMapper.readValue(imovel1.getResponse().getContentAsString(), typeReference);
+        BigDecimal totalPrice2 = objectMapper.readValue(imovel2.getResponse().getContentAsString(), typeReference);
+
+        double expectdPrice = 270000.0;
+        double expectdPrice2 = 25000.0;
+
+        Assertions.assertEquals(BigDecimal.valueOf(expectdPrice), totalPrice);
+        Assertions.assertEquals(BigDecimal.valueOf(expectdPrice2), totalPrice2);
+
     }
 }
