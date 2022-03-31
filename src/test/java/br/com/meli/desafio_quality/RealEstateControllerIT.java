@@ -153,7 +153,7 @@ public class RealEstateControllerIT {
 
         realEstateRepository.save(i1);
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/{propName}/largestroom"
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/largestroom"
                 , "Imovel_Inexitente"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
