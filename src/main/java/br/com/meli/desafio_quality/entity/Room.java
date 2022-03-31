@@ -8,7 +8,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-
+/**
+ * @author Juliio Gama, Felipe Myose
+ * criação da entidade, validação dos atributos da entidade real estate
+ */
 @Data
 @Builder
 @AllArgsConstructor

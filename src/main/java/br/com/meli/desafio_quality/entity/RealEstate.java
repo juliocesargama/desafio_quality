@@ -12,8 +12,8 @@ import java.util.List;
 
 
 /**
- * @author Ana preis
- * validação dos atributos da entidade real estate
+ * @author Marcelo Leite, Ana preis
+ * criação da entidade,   validação dos atributos da entidade real estate
  */
 @Data
 @NoArgsConstructor
