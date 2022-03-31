@@ -94,6 +94,13 @@ public class RealEstateControllerIT {
         i2.setRooms(roomList2);
     }
 
+    @AfterEach
+    public void resetData() {
+        for (RealEstate rs: realEstateRepository.findAll()) {
+            realEstateRepository.delete(rs);
+        }
+    }
+
     /**
      * @author Felipe Myose
      */
