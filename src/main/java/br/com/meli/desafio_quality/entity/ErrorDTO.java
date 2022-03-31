@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * @author Antonio Hugo Freire
+ * @author Antonio Hugo Freire, Felipe Myose
  * **/
 
 @Data

@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionController {
 
+    /**
+     * @author Felipe Myose
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorDTO>> handleModelsValidations(MethodArgumentNotValidException e) {
         List<ErrorDTO> errors = e.getBindingResult().getAllErrors().stream()
@@ -24,6 +27,9 @@ public class ExceptionController {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * @author Felipe Myose, Antonio Hugo Freire
+     */
     @ExceptionHandler(JsonParseException.class)
     public ResponseEntity<ErrorDTO> handleHttpMessageNotReadableEx(JsonParseException e) {
         ErrorDTO error = ErrorDTO.builder()

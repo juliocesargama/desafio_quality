@@ -24,19 +24,26 @@ public class RealEstateController {
     @Autowired
     RoomService roomService;
 
+    /**
+     * @author Julio Gama
+     */
     @GetMapping("/realestate/all")
     public ResponseEntity<List<RealEstate>> getAllRealEstates(){
         return ResponseEntity.ok(realEstateService.getAll());
     }
 
+    /**
+     * @author Julio Gama,     Antonio Hugo Freire
+     * criação desse endpoint, refatoração
+     */
     @GetMapping("/realestate/{name}")
     public ResponseEntity<RealEstate> getRealEstateByName(@PathVariable String name){
         return ResponseEntity.ok(realEstateService.findByName(name));
     }
 
     /**
-     * @author Ana preis
-     * criação desse endpoint
+     * @author Ana preis,      Julio Gama
+     * criação desse endpoint, refatoração
      */
     @GetMapping("/realestate/{propName}/{roomName}/area")
     public ResponseEntity<Double> returnRoomArea(@PathVariable String roomName,
@@ -48,6 +55,9 @@ public class RealEstateController {
         return ResponseEntity.ok(roomService.getRoomArea(room));
     }
 
+    /**
+     * @author Felipe Myose
+     */
     @GetMapping("/realestate/{propName}/areabyroom")
     public ResponseEntity<List<RoomAreaDTO>> returAreaByRoom(@PathVariable String propName) {
 
@@ -57,6 +67,9 @@ public class RealEstateController {
         return ResponseEntity.ok(roomAreas);
     }
 
+    /**
+     * @author Julio Gama, Antonio Hugo Freire
+     * **/
     @GetMapping("/realestate/{propName}/totalarea")
     public ResponseEntity<Double> getRealEstateTotalArea(@PathVariable String propName){
 
@@ -66,6 +79,9 @@ public class RealEstateController {
 
     }
 
+    /**
+     * @author Felipe Myose
+     */
     @GetMapping("/realestate/{propName}/price")
     public ResponseEntity<BigDecimal> getRealEstatePrice(@PathVariable String propName) {
 
@@ -86,6 +102,9 @@ public class RealEstateController {
         return ResponseEntity.ok(roomService.getBiggestRoom(realEstate));
     }
 
+    /**
+     * @author Antonio Hugo Freire
+     * **/
     @PostMapping("/realestate")
     public ResponseEntity<RealEstate> createRealEstate(@RequestBody RealEstate realEstate) {
 
