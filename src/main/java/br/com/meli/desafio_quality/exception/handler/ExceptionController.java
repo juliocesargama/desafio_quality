@@ -19,6 +19,7 @@ public class ExceptionController {
 
     /**
      * @author Felipe Myose
+     * Exception para tratar erros referentes aos dados inseridos incorretamente, não obedencendo a entity validation.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorDTO>> handleModelsValidations(MethodArgumentNotValidException e) {
@@ -30,6 +31,7 @@ public class ExceptionController {
 
     /**
      * @author Felipe Myose, Antonio Hugo Freire
+     * Exception para tratar erros de mal formatação de uma requisição.
      */
     @ExceptionHandler(JsonParseException.class)
     public ResponseEntity<ErrorDTO> handleHttpMessageNotReadableEx(JsonParseException e) {

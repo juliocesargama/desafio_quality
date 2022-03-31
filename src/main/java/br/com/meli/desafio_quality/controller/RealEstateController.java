@@ -60,6 +60,7 @@ public class RealEstateController {
 
     /**
      * @author Felipe Myose
+     * retorna a lista de comodos com sua respectiva area de um imovel.
      */
     @GetMapping("/realestate/{propName}/areabyroom")
     public ResponseEntity<List<RoomAreaDTO>> returnAreaByRoom(@PathVariable String propName) {
@@ -84,6 +85,7 @@ public class RealEstateController {
 
     /**
      * @author Felipe Myose
+     * retorna o preço do imovel
      */
     @GetMapping("/realestate/{propName}/price")
     public ResponseEntity<BigDecimal> getRealEstatePrice(@PathVariable String propName) {
