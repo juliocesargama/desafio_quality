@@ -50,6 +50,7 @@ public class RealEstateService {
 
     /**
      * @author Felipe Myose
+     * retorna uma lista de RoomAreaDTO, contendo o nome do cômodo e sua respectiva área.
      */
     public List<RoomAreaDTO> getAreaByRoom(RealEstate realEstate) {
 
@@ -99,6 +100,7 @@ public class RealEstateService {
 
     /**
      * @author Felipe Myose
+     * Retorna a entidade de Room dado roomName de um imóvel
      */
     public Room getRoomByName(RealEstate realEstate, String roomName) {
         return realEstate.getRooms().stream().filter(room -> room.getRoomName().equals(roomName)).findFirst()

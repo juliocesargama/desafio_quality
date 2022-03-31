@@ -107,6 +107,8 @@ public class RealEstateControllerIT {
 
     /**
      * @author Felipe Myose
+     * Criação da estrutura base para os Testes de integração
+     * Teste para verificar /realestate/all
      */
     @Test
     public void getAllRealEstatesEmptyTest() throws Exception {
@@ -121,6 +123,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Felipe Myose
+     * Teste de integração para verificar se o o endpoint /realestate/all retorna todos os imóveis do repositório.
      */
     @Test
     public void getAllRealEstatesTest() throws Exception {
@@ -212,6 +215,7 @@ public class RealEstateControllerIT {
      * @author Julio Gama
      * Teste de integração para verificar se passando os parâmetros corretos, é realizado o cálculo  da área do cômodo de forma esperada.
      */
+
     @Test
     public void getRoomAreaTest() throws Exception{
 
@@ -232,6 +236,7 @@ public class RealEstateControllerIT {
      * @author Julio Gama
      * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado um imóvel inválido.
      */
+
     @Test
     public void getRoomAreaPropNameInvalid() throws Exception{
 
@@ -250,6 +255,7 @@ public class RealEstateControllerIT {
      * @author Julio Gama
      * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado um cômodo inválido.
      */
+
     @Test
     public void getRoomAreaRoomNameInvalid() throws Exception{
 
@@ -268,6 +274,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera um statusCode 200 com o resutado total da area do Imóvel.git
      */
+
     @Test
     public void shouldCalcTotalAreaOfRealEstate() throws Exception{
         realEstateRepository.save(i1);
@@ -284,6 +291,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera um status de error 400
      */
+
     @Test
     public void shouldNotBeAbleCalcTotalAreaOfRealEstate() throws Exception{
 
@@ -303,6 +311,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera um status de error 400
      */
+
     @Test
     public void shouldBeAbleFailException() throws Exception{
 
@@ -454,6 +463,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera receber retorno 400 com o payload error com a messagem O nome do cômodo não pode estar vazio.
      */
+
     @Test
     public void shouldNotBeAbleToCreateRealEstateWithRoomNameEmpty() throws Exception{
         RealEstate mockRealEstate = new RealEstate("Imoval1",
@@ -473,6 +483,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera receber retorno 400 com o payload error com a messagem A largura do cômodo não pode estar vazia.
      */
+
     @Test
     public void shouldNotBeAbleToCreateRealEstateWithRoomWidthEmpty() throws Exception{
         RealEstate mockRealEstate = new RealEstate("Imoval1",
@@ -492,6 +503,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera receber retorno 400 com o payload error com a messagem A largura máxima permitida por cômodo é de 25 metros.
      */
+
     @Test
     public void shouldNotBeAbleToCreateRealEstateWithRoomMaximumWidthIs25Meters() throws Exception{
         RealEstate mockRealEstate = new RealEstate("Imoval1",
@@ -511,6 +523,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera receber retorno 400 com o payload error com a messagem O comprimento máximo permitido por cômodo é de 33 metros.
      */
+
     @Test
     public void shouldNotBeAbleToCreateRealEstateWithRoomMaximumLengthIs33Meters() throws Exception{
         RealEstate mockRealEstate = new RealEstate("Imoval1",
@@ -530,6 +543,7 @@ public class RealEstateControllerIT {
      * @author Antonio Hugo Freire
      * Este teste espera receber retorno 400 com o payload error com a messagem O comprimento do cômodo não pode estar vazio.
      */
+
     @Test
     public void shouldNotBeAbleToCreateRealEstateWithRoomLengthEmpty() throws Exception{
         RealEstate mockRealEstate = new RealEstate("Imoval1",
@@ -543,5 +557,45 @@ public class RealEstateControllerIT {
                 .content(realEstate))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$[*].description").value("O comprimento do cômodo não pode estar vazio."));
+    }
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se o imóvel retorna corretamente.
+     */
+    @Test
+    public void shouldGetRealEstateByName() throws Exception {
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(get("/realestate/{name}/","Imovel1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TypeReference<RealEstate> typeReference = new TypeReference<RealEstate>() {};
+        RealEstate realStateFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(i1,realStateFromResponse);
+
+    }
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel inválido.
+     */
+    @Test
+    public void shouldGetRealEstateByNameThrowsException() throws Exception {
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(get("/realestate/{name}/","Imovel"))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals("Imovel nao encontrado",error.getDescription());
+
     }
 }

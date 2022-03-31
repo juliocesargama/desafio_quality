@@ -33,6 +33,7 @@ public class RealEstateRepository implements IRepository<RealEstate> {
 
     /**
      * @author Felipe Myose
+     * remove uma RealEstate passando o argumento como a própria instância do objeto.
      */
     public RealEstate delete(RealEstate realEstate) {
         realEstates.remove(realEstate);
