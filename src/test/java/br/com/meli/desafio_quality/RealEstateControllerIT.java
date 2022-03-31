@@ -354,7 +354,7 @@ public class RealEstateControllerIT {
      * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel inválido.
      */
     @Test
-    public void shouldGetRealEstateByNameThrowsExpection() throws Exception {
+    public void shouldGetRealEstateByNameThrowsException() throws Exception {
 
         realEstateRepository.save(i1);
 
