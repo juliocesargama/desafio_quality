@@ -110,6 +110,7 @@ public class RealEstateController {
 
     /**
      * @author Antonio Hugo Freire
+     * Este método cria um novo imóvel, em caso de sucesso retonar o código 201 e o imóvel criado.
      * **/
     @PostMapping("/realestate")
     public ResponseEntity<RealEstate> createRealEstate(@Valid @RequestBody RealEstate realEstate) {
