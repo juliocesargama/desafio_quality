@@ -32,6 +32,14 @@ public class RealEstateRepository implements IRepository<RealEstate> {
     }
 
     /**
+     * @author Felipe Myose
+     */
+    public RealEstate delete(RealEstate realEstate) {
+        realEstates.remove(realEstate);
+        return realEstate;
+    }
+
+    /**
      * @author Antonio Hugo Freire
      */
     @Override
