@@ -1,6 +1,7 @@
 package br.com.meli.desafio_quality;
 
 import br.com.meli.desafio_quality.entity.District;
+import br.com.meli.desafio_quality.entity.ErrorDTO;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
@@ -8,9 +9,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -120,5 +125,43 @@ public class RealEstateControllerIT {
 
         Assertions.assertEquals(i1, realEstatesFromResponse.get(0));
         Assertions.assertEquals(i2, realEstatesFromResponse.get(1));
+    }
+
+    /**
+     * @author Ana Preis
+     */
+    @Test
+    public void getLargestRoom() throws Exception {
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/{propName}/largestroom", "Imovel1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        TypeReference<Room> typeReference = new TypeReference<>() {};
+        Room roomFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(r2, roomFromResponse);
+    }
+
+    /**
+     * @author Ana Preis
+     */
+    @Test
+    public void getLargestRoomWithException() throws Exception {
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/{propName}/largestroom"
+                , "Imovel_Inexitente"))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<>() {};
+
+        ErrorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference) ;
+
+        Assertions.assertEquals("Imovel nao encontrado", response.getDescription());
     }
 }
