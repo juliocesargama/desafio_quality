@@ -91,6 +91,7 @@ public class RealEstateService {
 
     /**
      * @author Antonio Hugo
+     * Este método busca um imóvel pelo nome
      */
     public RealEstate findByName(String name) {
         return realEstateRepository.findByName(name);

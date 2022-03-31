@@ -22,6 +22,7 @@ public class RoomService {
 
     /**
      * @author Antonio Hugo
+     * Este método retorna o maior comodo do imóvel
      */
     public Room getBiggestRoom(RealEstate realEstate) {
         List<Room> rooms = realEstate.getRooms();
