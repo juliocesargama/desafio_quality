@@ -28,6 +28,7 @@ public class RealEstateService {
 
     /**
      * @author Marcelo Leite
+     * Metodo que retorna todos os imóveis.
      */
     public List<RealEstate> getAll() {
 
@@ -62,6 +63,7 @@ public class RealEstateService {
 
     /**
      * @author Marcelo Leite
+     * metodo que faz o calculo do preço total do imovel, total da area * o valor do bairro.
      */
     public BigDecimal getRealEstatePrice(RealEstate realEstate) {
         return BigDecimal.valueOf(getRealStateTotalArea(realEstate)).multiply(realEstate.getDistrict().getValueDistrictM2());

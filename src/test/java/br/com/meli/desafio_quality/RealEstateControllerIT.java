@@ -183,8 +183,8 @@ public class RealEstateControllerIT {
   
     /**
      * @author Marcelo Leite
+     * Teste de integração, testenado o endpoint que retorna o preço total do imovel, recebendo como @PathVariable o nome do imovel.
      */
-    @DisplayName("Test getRealEstatePrice() total price")
     @Test
     public void getRealEstatePriceTest() throws Exception {
         realEstateRepository.save(i1);
