@@ -31,7 +31,9 @@ public class RealEstateService {
      * @author Marcelo Leite
      */
     public List<RealEstate> getAll() {
+
         return realEstateRepository.findAll();
+
     }
 
     /**
@@ -40,7 +42,7 @@ public class RealEstateService {
     public Double getRealStateTotalArea(RealEstate realEstate){
 
             if(realEstate.getRooms().size() == 0){
-                throw new MissingRoomException("Cômodo não foi encontrado.");
+                throw new MissingRoomException("Cômodos não foram encontrados.");
             }
                 return realEstate.getRooms().stream().mapToDouble(room -> roomService.getRoomArea(room)).sum();
     }
@@ -49,6 +51,11 @@ public class RealEstateService {
      * @author Felipe Myose
      */
     public List<RoomAreaDTO> getAreaByRoom(RealEstate realEstate) {
+
+        if(realEstate.getRooms().size() == 0){
+            throw new MissingRoomException("Cômodos não foram encontrados.");
+        }
+
         return realEstate.getRooms().stream().map(room -> new RoomAreaDTO(room.getRoomName(), roomService.getRoomArea(room)))
                 .collect(Collectors.toList());
     }
