@@ -328,6 +328,11 @@ public class RealEstateControllerIT {
         Assertions.assertEquals(expectedMessage,  error.getDescription());
     }
 
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se o imóvel retorna corretamente.
+     */
     @Test
     public void shouldGetRealEstateByName() throws Exception {
 
@@ -344,6 +349,10 @@ public class RealEstateControllerIT {
 
     }
 
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel inválido.
+     */
     @Test
     public void shouldGetRealEstateByNameThrowsExpection() throws Exception {
 
