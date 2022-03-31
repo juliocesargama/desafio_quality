@@ -45,6 +45,9 @@ public class RealEstateController {
         RealEstate realEstate = realEstateService.findByName(propName);
         Room room = realEstateService.getRoomByName(realEstate, roomName);
 
+        if(room == null)
+            return ResponseEntity.notFound().build();
+
         return ResponseEntity.ok(roomService.getRoomArea(room));
     }
 
