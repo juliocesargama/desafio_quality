@@ -3,6 +3,8 @@ package br.com.meli.desafio_quality.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 
@@ -24,6 +26,6 @@ public class RealEstate {
   private String propName;
 
   private District district;
-  private List<Room> rooms;
+  private List<@Valid Room> rooms;
 
 }
