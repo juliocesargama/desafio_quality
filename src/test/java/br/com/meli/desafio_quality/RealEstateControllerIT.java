@@ -327,4 +327,46 @@ public class RealEstateControllerIT {
         System.out.println(error.getDescription());
         Assertions.assertEquals(expectedMessage,  error.getDescription());
     }
+
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se o imóvel retorna corretamente.
+     */
+    @Test
+    public void shouldGetRealEstateByName() throws Exception {
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(get("/realestate/{name}/","Imovel1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TypeReference<RealEstate> typeReference = new TypeReference<RealEstate>() {};
+        RealEstate realStateFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(i1,realStateFromResponse);
+
+    }
+
+    /**
+     * @author Julio Gama
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel inválido.
+     */
+    @Test
+    public void shouldGetRealEstateByNameThrowsException() throws Exception {
+
+        realEstateRepository.save(i1);
+
+        MvcResult result = mockMvc.perform(get("/realestate/{name}/","Imovel"))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals("Imovel nao encontrado",error.getDescription());
+
+    }
+
 }
