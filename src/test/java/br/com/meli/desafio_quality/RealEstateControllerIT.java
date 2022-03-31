@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class RealEstateControllerIT {
@@ -83,6 +88,19 @@ public class RealEstateControllerIT {
         i2.setRooms(roomList2);
     }
 
+    /**
+     * @author Felipe Myose
+     */
+    @Test
+    public void getAllRealEstatesEmptyTest() throws Exception {
+        MvcResult result = mockMvc.perform(get("/realestate/all"))
+                .andExpect(status().isOk())
+                .andReturn();
+        TypeReference<List<RealEstate>> typeReference = new TypeReference<List<RealEstate>>() {};
+        List<RealEstate> realEstatesFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(0, realEstatesFromResponse.size());
+    }
 
     /**
      * @author Felipe Myose
