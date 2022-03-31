@@ -36,7 +36,7 @@ public class RealEstateRepository implements IRepository<RealEstate> {
      */
     @Override
     public RealEstate findByName(String name) {
-        return realEstates.stream().filter(realEstate -> realEstate.getPropName().equals(name)).findFirst().orElseThrow(() ->new MissingRealEstateException("Imóvel não encontrado"));
+        return realEstates.stream().filter(realEstate -> realEstate.getPropName().equals(name)).findFirst().orElseThrow(() ->new MissingRealEstateException("Imovel nao encontrado"));
     }
 
     public List<RealEstate> findAll() {
