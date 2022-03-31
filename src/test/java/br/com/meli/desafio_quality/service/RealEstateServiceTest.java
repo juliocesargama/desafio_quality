@@ -256,12 +256,13 @@ public class RealEstateServiceTest {
     }
 
     /**
-     * @author Antonio Hugo Freire
+     * @author Antonio Hugo Freire, Julio Gama
+     * criador do teste, realizou fix no string da mensagem.
      */
     @Test
     public void shouldNotBeAbleToGetAreaByRoom() {
         RealEstate mockRealEstate = new RealEstate("Casa", new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
-        String message = "Cômodos não foram encontrados.";
+        String message = "Comodos nao foram encontrados.";
 
         RuntimeException exception = Assertions.assertThrows(MissingRoomException.class, () -> realEstateService.getAreaByRoom(mockRealEstate));
         assertThat(exception.getMessage()).isEqualTo(message);
