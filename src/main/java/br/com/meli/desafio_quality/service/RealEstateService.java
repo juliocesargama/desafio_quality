@@ -51,8 +51,6 @@ public class RealEstateService {
     }
 
     public Room getRoomByName(RealEstate realEstate, String roomName) {
-        Room roomByName = realEstate.getRooms().stream().filter(room -> room.getRoomName().equals(roomName)).findFirst().orElse(null);
-
-        return roomByName;
+        return realEstate.getRooms().stream().filter(room -> room.getRoomName().equals(roomName)).findFirst().orElse(null);
     }
 }
