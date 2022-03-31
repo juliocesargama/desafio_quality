@@ -4,6 +4,7 @@ import br.com.meli.desafio_quality.entity.RealEstate;
 
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
+import br.com.meli.desafio_quality.exception.MissingRoomException;
 import br.com.meli.desafio_quality.service.RealEstateService;
 import br.com.meli.desafio_quality.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,6 @@ public class RealEstateController {
 
         RealEstate realEstate = realEstateService.findByName(propName);
         Room room = realEstateService.getRoomByName(realEstate, roomName);
-
-        if(room == null)
-            return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(roomService.getRoomArea(room));
     }

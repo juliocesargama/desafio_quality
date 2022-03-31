@@ -267,7 +267,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Antonio Hugo Freire
-     * Este teste espera um statusCode 200 com o resutado total da arae do Imóvel.git
+     * Este teste espera um statusCode 200 com o resutado total da area do Imóvel.git
      */
     @Test
     public void shouldCalcTotalAreaOfRealEstate() throws Exception{
