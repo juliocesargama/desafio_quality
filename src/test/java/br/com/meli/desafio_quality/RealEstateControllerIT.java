@@ -108,6 +108,8 @@ public class RealEstateControllerIT {
 
     /**
      * @author Felipe Myose
+     * Criação da estrutura base para os Testes de integração
+     * Teste para verificar /realestate/all
      */
     @Test
     public void getAllRealEstatesEmptyTest() throws Exception {
@@ -122,6 +124,7 @@ public class RealEstateControllerIT {
 
     /**
      * @author Felipe Myose
+     * Teste de integração para verificar se o o endpoint /realestate/all retorna todos os imóveis do repositório.
      */
     @Test
     public void getAllRealEstatesTest() throws Exception {

@@ -68,6 +68,7 @@ public class RealEstateServiceTest {
 
     /**
      * @author Felipe Myose
+     * Teste unitário para verificar método realEstateService.getRoomByName
      */
     @Test
     public void testGetRoomByNameExistingRoom() {
