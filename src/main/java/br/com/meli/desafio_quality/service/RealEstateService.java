@@ -3,6 +3,7 @@ package br.com.meli.desafio_quality.service;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
+import br.com.meli.desafio_quality.exception.MissingRealEstateException;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
