@@ -39,6 +39,7 @@ public class RealEstateService {
 
     /**
      * @author Julio Gama
+     * Regra de negócio que verifica se há cômodos na propriedade, em caso positivo deve realizar o cálculo de cada área dos cômodos e somá-los
      */
     public Double getRealStateTotalArea(RealEstate realEstate){
 
