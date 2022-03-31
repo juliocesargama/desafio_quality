@@ -202,4 +202,61 @@ public class RealEstateControllerIT {
         Assertions.assertEquals(BigDecimal.valueOf(expectdPrice), totalPrice);
         Assertions.assertEquals(BigDecimal.valueOf(expectdPrice2), totalPrice2);
     }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+    @Test
+    public void shouldCalcTotalAreaOfRealEstate() throws Exception{
+        realEstateRepository.save(i1);
+        String expected = "900.0";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/Imovel1/totalarea"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        Assertions.assertEquals(expected, result.getResponse().getContentAsString());
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+    @Test
+    public void shouldNotBeAbleCalcTotalAreaOfRealEstate() throws Exception{
+
+        String expectedMessage = "Imovel nao encontrado";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/not_exists/totalarea"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+    @Test
+    public void shouldBeAbleFailException() throws Exception{
+
+        RealEstate mockRealEstate = new RealEstate("Casa",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
+
+        realEstateRepository.save(mockRealEstate);
+
+        String expectedMessage = "Comodos nao foram encontrados.";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/Casa/totalarea"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        System.out.println(error.getDescription());
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
+    }
 }
