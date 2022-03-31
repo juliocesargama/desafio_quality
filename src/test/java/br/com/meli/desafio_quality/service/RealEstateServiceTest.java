@@ -6,6 +6,7 @@ import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.exception.MissingRealEstateException;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
+import br.com.meli.desafio_quality.exception.RealEstateAlreadyExistsException;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -242,4 +243,31 @@ public class RealEstateServiceTest {
 
         Assertions.assertEquals(realEstateList.get(0).getDistrict(), realEstateService.getAll().get(0).getDistrict());
     }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+    @Test
+    public void shouldNotBeAbleToGetAreaByRoom() {
+        RealEstate mockRealEstate = new RealEstate("Casa", new District("Jardim 1", BigDecimal.valueOf(500.0)), new ArrayList<>());
+        String message = "Cômodo não foi encontrado.";
+
+        RuntimeException exception = Assertions.assertThrows(MissingRoomException.class, () -> realEstateService.getAreaByRoom(mockRealEstate));
+        assertThat(exception.getMessage()).isEqualTo(message);
+    }
+
+    /**
+     * @author Antonio Hugo Freire
+     */
+
+    @Test
+    public void shouldNotBeAbleAlreadyExistsRealEstate() {
+
+        List<RealEstate> mockRealEstateList = List.of(i1);
+
+        Mockito.when(realEstateRepository.findAll()).thenReturn(mockRealEstateList);
+
+        Assertions.assertThrows(RealEstateAlreadyExistsException.class, () -> realEstateService.save(i1));
+    }
+
 }
