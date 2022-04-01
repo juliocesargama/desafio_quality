@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
  * @author Felipe Myose
  */
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomAreaDTO {
