@@ -2,13 +2,11 @@ package br.com.meli.desafio_quality;
 
 import br.com.meli.desafio_quality.entity.*;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
-import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,7 +18,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -198,15 +195,15 @@ public class RealEstateControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
-        TypeReference<BigDecimal> typeReference = new TypeReference<BigDecimal>() {};
-        BigDecimal totalPrice = objectMapper.readValue(imovel1.getResponse().getContentAsString(), typeReference);
-        BigDecimal totalPrice2 = objectMapper.readValue(imovel2.getResponse().getContentAsString(), typeReference);
+        TypeReference<RealEstatePriceDTO> typeReference = new TypeReference<RealEstatePriceDTO>() {};
+        RealEstatePriceDTO totalPrice1 = objectMapper.readValue(imovel1.getResponse().getContentAsString(), typeReference);
+        RealEstatePriceDTO totalPrice2 = objectMapper.readValue(imovel2.getResponse().getContentAsString(), typeReference);
 
-        double expectdPrice = 270000.0;
-        double expectdPrice2 = 25000.0;
+        RealEstatePriceDTO expectdPrice1 = new RealEstatePriceDTO(i1.getPropName(), BigDecimal.valueOf(270000.00));
+        RealEstatePriceDTO expectdPrice2 = new RealEstatePriceDTO(i2.getPropName(), BigDecimal.valueOf(25000.00));
 
-        Assertions.assertEquals(BigDecimal.valueOf(expectdPrice), totalPrice);
-        Assertions.assertEquals(BigDecimal.valueOf(expectdPrice2), totalPrice2);
+        Assertions.assertEquals(expectdPrice1, totalPrice1);
+        Assertions.assertEquals(expectdPrice2, totalPrice2);
     }
 
     /**
@@ -223,11 +220,12 @@ public class RealEstateControllerIT {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        TypeReference<Double> typeReference = new TypeReference<Double>() {};
-        Double roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+        TypeReference<RoomAreaDTO> typeReference = new TypeReference<>() {};
+        RoomAreaDTO roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
 
-        Assertions.assertEquals(150.0,roomAreaFromResponse.doubleValue());
+        RoomAreaDTO dto = new RoomAreaDTO("TestRoom1", 150.0);
 
+        Assertions.assertEquals(dto,roomAreaFromResponse);
     }
 
     /**
@@ -555,6 +553,30 @@ public class RealEstateControllerIT {
                 .content(realEstate))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$[*].description").value("O comprimento do cômodo não pode estar vazio."));
+    }
+
+
+    /**
+     * @author Felipe Myose
+     * Teste para validar a exception quando o json está com uma formatação errada.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWithNotJsonFormat() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "Casa", 25.0, null)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+        // remove first "," separator
+        String realEstateWithError = realEstate.replace(",", "");
+        MvcResult response = mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstateWithError))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("Requisição mal formatada"))
+                .andReturn();
+
+        Assertions.assertTrue(response.getResponse().getContentAsString().contains("was expecting comma to separate Object entries"));
     }
 
     /**

@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
  * criação da entidade, validação dos atributos da entidade real estate
  */
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Room {

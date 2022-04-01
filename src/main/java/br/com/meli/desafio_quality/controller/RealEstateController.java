@@ -2,6 +2,7 @@ package br.com.meli.desafio_quality.controller;
 
 import br.com.meli.desafio_quality.entity.RealEstate;
 
+import br.com.meli.desafio_quality.entity.RealEstatePriceDTO;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
@@ -49,13 +50,14 @@ public class RealEstateController {
      * Refatoração para realizar o cálculo da área do cômodo sem chamada do Service de Cômodo.
      */
     @GetMapping("/realestate/{propName}/{roomName}/area")
-    public ResponseEntity<Double> returnRoomArea(@PathVariable String roomName,
+    public ResponseEntity<RoomAreaDTO> returnRoomArea(@PathVariable String roomName,
                                                  @PathVariable String propName) {
 
         RealEstate realEstate = realEstateService.findByName(propName);
         Room room = realEstateService.getRoomByName(realEstate, roomName);
+        RoomAreaDTO result = new RoomAreaDTO(room.getRoomName(), roomService.getRoomArea(room));
 
-        return ResponseEntity.ok(roomService.getRoomArea(room));
+        return ResponseEntity.ok(result);
     }
 
     /**
@@ -85,14 +87,16 @@ public class RealEstateController {
 
     /**
      * @author Felipe Myose
-     * retorna o preço do imovel
+     * retorna RealEstatePriceDTO, contendo o nome do imóvel e o seu preço.
      */
     @GetMapping("/realestate/{propName}/price")
-    public ResponseEntity<BigDecimal> getRealEstatePrice(@PathVariable String propName) {
+    public ResponseEntity<RealEstatePriceDTO> getRealEstatePrice(@PathVariable String propName) {
 
         RealEstate realEstate = realEstateService.findByName(propName);
 
-        return ResponseEntity.ok(realEstateService.getRealEstatePrice(realEstate));
+        RealEstatePriceDTO realEstatePriceDTO = new RealEstatePriceDTO(propName, realEstateService.getRealEstatePrice(realEstate));
+
+        return ResponseEntity.ok(realEstatePriceDTO);
     }
 
     /**
