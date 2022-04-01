@@ -1,9 +1,6 @@
 package br.com.meli.desafio_quality;
 
-import br.com.meli.desafio_quality.entity.District;
-import br.com.meli.desafio_quality.entity.ErrorDTO;
-import br.com.meli.desafio_quality.entity.RealEstate;
-import br.com.meli.desafio_quality.entity.Room;
+import br.com.meli.desafio_quality.entity.*;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -197,15 +195,15 @@ public class RealEstateControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
-        TypeReference<BigDecimal> typeReference = new TypeReference<BigDecimal>() {};
-        BigDecimal totalPrice = objectMapper.readValue(imovel1.getResponse().getContentAsString(), typeReference);
-        BigDecimal totalPrice2 = objectMapper.readValue(imovel2.getResponse().getContentAsString(), typeReference);
+        TypeReference<RealEstatePriceDTO> typeReference = new TypeReference<RealEstatePriceDTO>() {};
+        RealEstatePriceDTO totalPrice1 = objectMapper.readValue(imovel1.getResponse().getContentAsString(), typeReference);
+        RealEstatePriceDTO totalPrice2 = objectMapper.readValue(imovel2.getResponse().getContentAsString(), typeReference);
 
-        double expectdPrice = 270000.0;
-        double expectdPrice2 = 25000.0;
+        RealEstatePriceDTO expectdPrice1 = new RealEstatePriceDTO(i1.getPropName(), BigDecimal.valueOf(270000.00));
+        RealEstatePriceDTO expectdPrice2 = new RealEstatePriceDTO(i2.getPropName(), BigDecimal.valueOf(25000.00));
 
-        Assertions.assertEquals(BigDecimal.valueOf(expectdPrice), totalPrice);
-        Assertions.assertEquals(BigDecimal.valueOf(expectdPrice2), totalPrice2);
+        Assertions.assertEquals(expectdPrice1, totalPrice1);
+        Assertions.assertEquals(expectdPrice2, totalPrice2);
     }
 
     /**
@@ -222,11 +220,12 @@ public class RealEstateControllerIT {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        TypeReference<Double> typeReference = new TypeReference<Double>() {};
-        Double roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+        TypeReference<RoomAreaDTO> typeReference = new TypeReference<>() {};
+        RoomAreaDTO roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
 
-        Assertions.assertEquals(150.0,roomAreaFromResponse.doubleValue());
+        RoomAreaDTO dto = new RoomAreaDTO("TestRoom1", 150.0);
 
+        Assertions.assertEquals(dto,roomAreaFromResponse);
     }
 
     /**
@@ -618,5 +617,68 @@ public class RealEstateControllerIT {
 
         Assertions.assertEquals("Imovel nao encontrado",error.getDescription());
 
+    }
+
+    /**
+     * @author Juliano Souza
+     * Teste de Integraçao para verificar se retorno está ok.
+     */
+    @Test
+    public void shouldGetAreaByRoom() throws Exception {
+
+        realEstateRepository.save(i1);
+        List<RoomAreaDTO> roomAreaDTOS = Arrays.asList(
+                new RoomAreaDTO("TestRoom1", 150.0),
+                new RoomAreaDTO("TestRoom2", 750.0)
+        );
+
+        final ByteArrayOutputStream estateSaveJson = new ByteArrayOutputStream();
+        objectMapper.writeValue(estateSaveJson, roomAreaDTOS);
+
+
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/areabyroom","Imovel1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Assertions.assertEquals(result.getResponse().getContentAsString(),estateSaveJson.toString());
+    }
+
+    /**
+     * @author Juliano Souza
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel inválido.
+     */
+    @Test
+    public void shouldGetAreaByRoomThrowsExceptionMissingRealEstateException() throws Exception {
+
+        realEstateRepository.save(i1);
+        String expectedMessage = "Imovel nao encontrado";
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/areabyroom", "Imovel22"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
+    }
+
+    /**
+     * @author Juliano Souza
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel sem comodos.
+     */
+    @Test
+    public void shouldGetBadRequestAreaByRoomComodosNaoEncontrados() throws Exception {
+        RealEstate realState = new RealEstate("Imovel", null, new ArrayList<>());
+        realEstateRepository.save(realState);
+
+        String expectedMessage = "Comodos nao foram encontrados.";
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/areabyroom", "Imovel"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
     }
 }
