@@ -2,6 +2,7 @@ package br.com.meli.desafio_quality.service;
 
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
+import br.com.meli.desafio_quality.exception.MissingRoomException;
 import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +28,7 @@ public class RoomService {
     public Room getBiggestRoom(RealEstate realEstate) {
         List<Room> rooms = realEstate.getRooms();
         if(rooms == null || rooms.size() == 0){
-            return null;
+            throw new MissingRoomException("Comodos nao foram encontrados.");
         }
 
         rooms.sort(Comparator.comparing(room -> getRoomArea(room).shortValue()));

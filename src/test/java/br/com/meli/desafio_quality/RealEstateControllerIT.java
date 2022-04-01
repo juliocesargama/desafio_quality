@@ -681,4 +681,22 @@ public class RealEstateControllerIT {
 
         Assertions.assertEquals(expectedMessage,  error.getDescription());
     }
+
+    /**
+     * @author Antonio Hugo Freire
+     * Este teste espera receber retorno 400 com o payload error com a messagem Comodos nao foram encontrados.
+     */
+
+    @Test
+    public void shouldBeAbleToReturnErrorCode400() throws Exception {
+        RealEstate mockRealEstate = new RealEstate("Imovel1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of());
+
+        realEstateRepository.save(mockRealEstate);
+
+        mockMvc.perform(get("/realestate/Imovel1/largestroom"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.description").value("Comodos nao foram encontrados."));
+    }
+
 }
