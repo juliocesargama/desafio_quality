@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a6894db3-ec74-401c-86f1-3924380ecc75",
+		"_postman_id": "0c31442b-5110-4074-9cca-8eaf873c7974",
 		"name": "desafio_quality_realestate",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -77,45 +77,6 @@
 						{
 							"key": "roomName",
 							"value": "Sala"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get area by room",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/realestate/:propName/:roomName/area",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"realestate",
-						":propName",
-						":roomName",
-						"area"
-					],
-					"query": [
-						{
-							"key": "nameRealEstate",
-							"value": null,
-							"disabled": true
-						}
-					],
-					"variable": [
-						{
-							"key": "propName",
-							"value": "Eduardo Afonso"
-						},
-						{
-							"key": "roomName",
-							"value": "Cozinha"
 						}
 					]
 				}
