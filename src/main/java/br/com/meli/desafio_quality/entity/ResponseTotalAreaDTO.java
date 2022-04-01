@@ -2,12 +2,13 @@ package br.com.meli.desafio_quality.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 
 /**
  * @author Antonio Hugo Freire
  */
-@Data
+@Getter
 @AllArgsConstructor
 
 public class ResponseTotalAreaDTO {
