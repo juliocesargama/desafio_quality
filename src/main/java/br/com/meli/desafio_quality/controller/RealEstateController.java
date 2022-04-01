@@ -50,13 +50,14 @@ public class RealEstateController {
      * Refatoração para realizar o cálculo da área do cômodo sem chamada do Service de Cômodo.
      */
     @GetMapping("/realestate/{propName}/{roomName}/area")
-    public ResponseEntity<Double> returnRoomArea(@PathVariable String roomName,
+    public ResponseEntity<RoomAreaDTO> returnRoomArea(@PathVariable String roomName,
                                                  @PathVariable String propName) {
 
         RealEstate realEstate = realEstateService.findByName(propName);
         Room room = realEstateService.getRoomByName(realEstate, roomName);
+        RoomAreaDTO result = new RoomAreaDTO(room.getRoomName(), roomService.getRoomArea(room));
 
-        return ResponseEntity.ok(roomService.getRoomArea(room));
+        return ResponseEntity.ok(result);
     }
 
     /**

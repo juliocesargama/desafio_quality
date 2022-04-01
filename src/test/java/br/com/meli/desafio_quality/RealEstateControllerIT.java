@@ -1,10 +1,7 @@
 package br.com.meli.desafio_quality;
 
-import br.com.meli.desafio_quality.entity.District;
-import br.com.meli.desafio_quality.entity.ErrorDTO;
-import br.com.meli.desafio_quality.entity.RealEstate;
-import br.com.meli.desafio_quality.entity.RealEstatePriceDTO;
-import br.com.meli.desafio_quality.entity.Room;
+
+import br.com.meli.desafio_quality.entity.*;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -223,11 +220,12 @@ public class RealEstateControllerIT {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        TypeReference<Double> typeReference = new TypeReference<Double>() {};
-        Double roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+        TypeReference<RoomAreaDTO> typeReference = new TypeReference<>() {};
+        RoomAreaDTO roomAreaFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
 
-        Assertions.assertEquals(150.0,roomAreaFromResponse.doubleValue());
+        RoomAreaDTO dto = new RoomAreaDTO("TestRoom1", 150.0);
 
+        Assertions.assertEquals(dto,roomAreaFromResponse);
     }
 
     /**
