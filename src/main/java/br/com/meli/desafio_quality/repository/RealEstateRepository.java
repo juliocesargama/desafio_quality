@@ -24,17 +24,10 @@ public class RealEstateRepository implements IRepository<RealEstate> {
     }
 
     /**
-     * @author Antonio Hugo Freire
-     */
-    @Override
-    public boolean delete(String name) {
-        return false;
-    }
-
-    /**
      * @author Felipe Myose
      * remove uma RealEstate passando o argumento como a própria instância do objeto.
      */
+    @Override
     public RealEstate delete(RealEstate realEstate) {
         realEstates.remove(realEstate);
         return realEstate;
