@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRepository<T> {
     T save(T t);
-    boolean delete(String name);
+    T delete(T t);
     T findByName(String name);
 }
