@@ -2,6 +2,7 @@ package br.com.meli.desafio_quality.controller;
 
 import br.com.meli.desafio_quality.entity.RealEstate;
 
+import br.com.meli.desafio_quality.entity.ResponseTotalAreaDTO;
 import br.com.meli.desafio_quality.entity.Room;
 import br.com.meli.desafio_quality.entity.RoomAreaDTO;
 import br.com.meli.desafio_quality.exception.MissingRoomException;
@@ -73,13 +74,14 @@ public class RealEstateController {
 
     /**
      * @author Julio Gama, Antonio Hugo Freire
+     * Este método retorna a total do imóvel.
      * **/
     @GetMapping("/realestate/{propName}/totalarea")
-    public ResponseEntity<Double> getRealEstateTotalArea(@PathVariable String propName){
+    public ResponseEntity<?> getRealEstateTotalArea(@PathVariable String propName){
 
         RealEstate realEstate = realEstateService.findByName(propName);
-
-        return ResponseEntity.ok(realEstateService.getRealStateTotalArea(realEstate));
+        Double totalArea = realEstateService.getRealStateTotalArea(realEstate);
+        return ResponseEntity.ok(new ResponseTotalAreaDTO(totalArea));
 
     }
 
