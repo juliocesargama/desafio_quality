@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -557,6 +558,30 @@ public class RealEstateControllerIT {
                 .content(realEstate))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$[*].description").value("O comprimento do cômodo não pode estar vazio."));
+    }
+
+
+    /**
+     * @author Felipe Myose
+     * Teste para validar a exception quando o json está com uma formatação errada.
+     */
+    @Test
+    public void shouldNotBeAbleToCreateRealEstateWithNotJsonFormat() throws Exception{
+        RealEstate mockRealEstate = new RealEstate("Imoval1",
+                new District("Jardim 1", BigDecimal.valueOf(500.0)),  List.of(new Room(
+                "Casa", 25.0, null)));
+
+        String  realEstate = objectMapper.writeValueAsString(mockRealEstate);
+        // remove first "," separator
+        String realEstateWithError = realEstate.replace(",", "");
+        MvcResult response = mockMvc.perform(post("/realestate")
+                .contentType("application/json")
+                .content(realEstateWithError))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("Requisição mal formatada"))
+                .andReturn();
+
+        Assertions.assertTrue(response.getResponse().getContentAsString().contains("was expecting comma to separate Object entries"));
     }
 
     /**
