@@ -278,9 +278,9 @@ public class RealEstateControllerIT {
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/realestate/Imovel1/totalarea"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.totalArea").value(expected))
                 .andReturn();
 
-        Assertions.assertEquals(expected, result.getResponse().getContentAsString());
     }
 
     /**
