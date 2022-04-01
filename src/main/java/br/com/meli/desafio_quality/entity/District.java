@@ -10,7 +10,6 @@ import javax.validation.constraints.*;
  * criação da entidade real estate
  */
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class District {
