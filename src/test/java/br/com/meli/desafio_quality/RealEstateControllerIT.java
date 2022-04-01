@@ -1,6 +1,5 @@
 package br.com.meli.desafio_quality;
 
-
 import br.com.meli.desafio_quality.entity.*;
 import br.com.meli.desafio_quality.repository.RealEstateRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -617,5 +617,68 @@ public class RealEstateControllerIT {
 
         Assertions.assertEquals("Imovel nao encontrado",error.getDescription());
 
+    }
+
+    /**
+     * @author Juliano Souza
+     * Teste de Integraçao para verificar se retorno está ok.
+     */
+    @Test
+    public void shouldGetAreaByRoom() throws Exception {
+
+        realEstateRepository.save(i1);
+        List<RoomAreaDTO> roomAreaDTOS = Arrays.asList(
+                new RoomAreaDTO("TestRoom1", 150.0),
+                new RoomAreaDTO("TestRoom2", 750.0)
+        );
+
+        final ByteArrayOutputStream estateSaveJson = new ByteArrayOutputStream();
+        objectMapper.writeValue(estateSaveJson, roomAreaDTOS);
+
+
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/areabyroom","Imovel1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Assertions.assertEquals(result.getResponse().getContentAsString(),estateSaveJson.toString());
+    }
+
+    /**
+     * @author Juliano Souza
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel inválido.
+     */
+    @Test
+    public void shouldGetAreaByRoomThrowsExceptionMissingRealEstateException() throws Exception {
+
+        realEstateRepository.save(i1);
+        String expectedMessage = "Imovel nao encontrado";
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/areabyroom", "Imovel22"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
+    }
+
+    /**
+     * @author Juliano Souza
+     * Teste de Integraçao para verificar se é lançada uma excessão caso seja passado imóvel sem comodos.
+     */
+    @Test
+    public void shouldGetBadRequestAreaByRoomComodosNaoEncontrados() throws Exception {
+        RealEstate realState = new RealEstate("Imovel", null, new ArrayList<>());
+        realEstateRepository.save(realState);
+
+        String expectedMessage = "Comodos nao foram encontrados.";
+        MvcResult result = mockMvc.perform(get("/realestate/{propName}/areabyroom", "Imovel"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        TypeReference<ErrorDTO> typeReference = new TypeReference<ErrorDTO>() {};
+        ErrorDTO error = objectMapper.readValue(result.getResponse().getContentAsString(), typeReference);
+
+        Assertions.assertEquals(expectedMessage,  error.getDescription());
     }
 }
