@@ -3,15 +3,20 @@ package br.com.meli.desafio_quality.service;
 import br.com.meli.desafio_quality.entity.District;
 import br.com.meli.desafio_quality.entity.RealEstate;
 import br.com.meli.desafio_quality.entity.Room;
+import br.com.meli.desafio_quality.exception.MissingRealEstateException;
+import br.com.meli.desafio_quality.exception.MissingRoomException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class RoomServiceTest {
@@ -33,13 +38,17 @@ public class RoomServiceTest {
         Assertions.assertEquals(biggestRoom, cozinha);
     }
 
+
+    /**
+     * @author Juliano Souza, Antonio Hugo Freire
+     * Este teste espera receber uma exceção quando os cômodo estiverem vazios
+     */
     @Test
     public void getBiggestRoomDeveRetornarNullSeNaoTiverRoom(){
         District bairroSilva = new District("Bairro silva ", new BigDecimal(1000.00));
         RealEstate realEstate = new RealEstate("Jose Alfredo", bairroSilva, null);
 
-        Room biggestRoom = this.roomService.getBiggestRoom(realEstate);
+        Assertions.assertThrows(MissingRoomException.class, () -> this.roomService.getBiggestRoom(realEstate));
 
-        Assertions.assertEquals(biggestRoom, null);
-    }
+   }
 }
